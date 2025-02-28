@@ -3,10 +3,10 @@ variable "aws_region" {
   default     = "us-east-1"
 }
 
-#variable "aws_profile" {
-#  description = "AWS Profile"
-#  default     = "terraform-admin"
-#}
+variable "aws_profile" {
+  description = "AWS Profile"
+  default     = "terraform-admin"
+}
 
 variable "profile_path" {
   default = "./profiles"

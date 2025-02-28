@@ -1,5 +1,6 @@
 provider "aws" {
   region  = var.aws_region                        # Región de AWS
+  profile = var.aws_profile                       # profile que se define por uso de multiples cuentas.
 }
 
 # Crear rol IAM con permisos admin
