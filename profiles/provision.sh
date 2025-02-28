@@ -1,23 +1,59 @@
 #!/bin/bash
 
 # ===========================================================================================================================
+# sudo para usuario ubuntu
+#echo "ubuntu ALL=(ALL) NOPASSWD:ALL" | sudo tee /etc/sudoers
+#echo "ubuntu ALL=(ALL) NOPASSWD:ALL" | sudo tee /etc/sudoers.d/ubuntu
+#chmod 440 /etc/sudoers.d/ubuntu
+# ===========================================================================================================================
 # Local Time:
+echo -e "configurar local time"
 sudo rm -fv /etc/localtime
 sudo ln -s /usr/share/zoneinfo/America/Argentina/Buenos_Aires /etc/localtime
 
+# ===========================================================================================================================
 # Node exporter: recopila metricas
+echo -e "configurar node_exporter"
+# Crear usuario para node_exporter
+
 sudo useradd -s /bin/false node_exporter
-sudo wget https://devops-tools-public.s3.amazonaws.com/node_exporter-1.0.1/node_exporter -O /usr/local/bin/node_exporter
+
+# Descargar node_exporter desde el repositorio oficial de Prometheus
+wget https://github.com/prometheus/node_exporter/releases/download/v1.6.1/node_exporter-1.6.1.linux-amd64.tar.gz
+tar xvfz node_exporter-1.6.1.linux-amd64.tar.gz
+sudo mv node_exporter-1.6.1.linux-amd64/node_exporter /usr/local/bin/
+
+# Establecer permisos y propiedad del binario
 sudo chmod 755 /usr/local/bin/node_exporter
 sudo chown node_exporter.node_exporter /usr/local/bin/node_exporter
-sudo wget https://devops-tools-public.s3.amazonaws.com/node_exporter-1.0.1/node_exporter.service -O /etc/systemd/system/node_exporter.service
+
+# Crear archivo de servicio systemd para node_exporter
+cat <<EOF | sudo tee /etc/systemd/system/node_exporter.service
+[Unit]
+Description=Node Exporter
+After=network.target
+
+[Service]
+User=node_exporter
+Group=node_exporter
+ExecStart=/usr/local/bin/node_exporter
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+# Establecer permisos y propiedad del archivo de servicio
 sudo chmod 644 /etc/systemd/system/node_exporter.service
 sudo chown root.root /etc/systemd/system/node_exporter.service
+
+# Recargar systemd y habilitar/iniciar el servicio
 sudo systemctl daemon-reload
 sudo systemctl enable node_exporter
 sudo systemctl start node_exporter
 
 # ===========================================================================================================================
+# AWS Cli
+echo -e "instalar aws cli"
 if ! command -v aws &> /dev/null; then
     echo "Instalando AWS CLI..."
     curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
@@ -26,23 +62,31 @@ if ! command -v aws &> /dev/null; then
     rm -rf awscliv2.zip aws
 fi
 
-mkdir -p ~/.aws
-cat <<EOF > ~/.aws/credentials
+echo -e "configurar access key"
+mkdir -p /home/${EC2_USER}/.aws
+cat <<EOF > /home/${EC2_USER}/.aws/credentials
 [default]
 aws_access_key_id = ${ACCESS_KEY}
 aws_secret_access_key = ${SECRET_KEY}
 region = us-east-1
 EOF
 
+chown -R ${EC2_USER}:${EC2_USER} /home/${EC2_USER}/.aws
+
 echo "Configuración de AWS CLI completada."
 aws configure list
+
 # ===========================================================================================================================
 sudo apt-get update -y
-sudo apt-get install -y docker.io apt-transport-https ca-certificates curl
+sudo apt-get install -y docker.io apt-transport-https ca-certificates unzip curl
+
+# Instalar eksctl
+curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp
+sudo mv /tmp/eksctl /usr/local/bin
 
 # instalar kubectl
-sudo curl -fsSLo /usr/share/keyrings/kubernetes-archive-keyring.gpg https://packages.cloud.google.com/apt/doc/apt-key.gpg
-echo "deb [signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list
+curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.30/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+echo 'deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.30/deb/ /' | sudo tee /etc/apt/sources.list.d/kubernetes.list
 sudo apt-get update
 sudo apt-get install -y kubectl
 
@@ -54,7 +98,7 @@ sudo apt-get update
 sudo apt-get install -y helm
 
 # Permisos para usar docker: en caso de querer crear/compilar imagen
-sudo usermod -aG docker $USER
+sudo usermod -aG docker ${EC2_USER}
 
 sudo systemctl start docker
 sudo systemctl enable docker
@@ -62,28 +106,30 @@ sudo systemctl enable docker
 # ===========================================================================================================================
 #
 
+cat <<EOFILE > tee /home/${EC2_USER}/script.sh  
+
 #VPC_ID=$(aws ec2 describe-vpcs --filters "Name=tag:Name,Values=terraform-vpc" --query "Vpcs[0].VpcId" --output text)
 #SUBNET_IDS=$(aws ec2 describe-subnets --filters "Name=vpc-id,Values=$VPC_ID" --query "Subnets[*].SubnetId" --output text | tr '\n' ',' | sed 's/,$//')
 
-# Crear el cluster EKS
-echo "Creando el cluster EKS..."
-eksctl create cluster \
-  --name eks-mundos-e \
-  --version 1.30 \
-  --region us-east-1 \
-  --node-type t3.small \
-  --nodes 3 \
-  --with-oidc \
-  --ssh-access \
-  --ssh-public-key pin \
-  --managed \
-  --full-ecr-access \
-  --zones us-east-1a,us-east-1b,us-east-1c \
-  --nodegroup-name ng-mundos-e \
-  --node-iam-policies "arn:aws:iam::aws:policy/AmazonEBSCSIDriverPolicy" \
-  --node-iam-policies "arn:aws:iam::aws:policy/AmazonEC2FullAccess"
-#  --vpc-public-subnets $SUBNET_IDS \
-#  --vpc-id $VPC_ID
+## Crear el cluster EKS
+#echo "Creando el cluster EKS..."
+#eksctl create cluster \
+#  --name eks-mundos-e \
+#  --version 1.30 \
+#  --region us-east-1 \
+#  --node-type t3.small \
+#  --nodes 3 \
+#  --with-oidc \
+#  --ssh-access \
+#  --ssh-public-key pin \
+#  --managed \
+#  --full-ecr-access \
+#  --zones us-east-1a,us-east-1b,us-east-1c \
+#  --nodegroup-name ng-mundos-e 
+##  --node-iam-policies "arn:aws:iam::aws:policy/AmazonEBSCSIDriverPolicy" \
+##  --node-iam-policies "arn:aws:iam::aws:policy/AmazonEC2FullAccess"
+##  --vpc-public-subnets $SUBNET_IDS \
+##  --vpc-id $VPC_ID
 
 # Verificar la creación del cluster
 #
@@ -293,4 +339,6 @@ helm install grafana grafana/grafana \
 kubectl get pods -n monitoring
 kubectl get svc -n monitoring
 kubectl get svc -n mundose
+EOFILE
 
+chown -R ${EC2_USER}:${EC2_USER} /home/${EC2_USER}/*

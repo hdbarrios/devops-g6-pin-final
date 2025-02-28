@@ -1,6 +1,6 @@
 provider "aws" {
   region  = var.aws_region                        # Región de AWS
-  profile = var.aws_profile                       # profile que se define por uso de multiples cuentas.
+  profile = var.aws_profile                       # Profile que se define por uso de múltiples cuentas.
 }
 
 # Crear rol IAM con permisos admin
@@ -34,7 +34,7 @@ resource "aws_iam_instance_profile" "ec2_admin_profile" {
   role = aws_iam_role.ec2_admin_role.name
 }
 
-# Crear usuario programatico:
+# Crear usuario programático:
 #
 resource "aws_iam_user" "programmatic_user" {
   name = var.programmatic_user
@@ -55,7 +55,7 @@ resource "aws_iam_access_key" "programmatic_user_key" {
 # openssl rsa -in pin.pem -text -noout
 
 resource "aws_key_pair" "key" {
-  key_name   = "pin"      
+  key_name   = "pin"
   public_key = file("${var.profile_path}/pin.pub") # Asegúrate de tener la clave pública generada
 }
 
@@ -76,28 +76,25 @@ resource "aws_instance" "server" {
     encrypted  = false                   # Si se debe encriptar el volumen (false en este caso)
   }
 
-  # asociar el perfil de IAM a la instancia EC2
+  # Asociar el perfil de IAM a la instancia EC2
   iam_instance_profile = aws_iam_instance_profile.ec2_admin_profile.name
 
   tags = merge(
     var.tags,
     {
-      Name         = var.ec2_name
-      Project = "PINF"
-      Group = "Grupo6"
+      Name    = var.ec2_name
     }
   )
-  
+
   user_data = templatefile("${var.profile_path}/provision.sh", {
     ami_user    = "ubuntu"
-    # asociar access key y user a la instancia
+    # Asociar access key y user a la instancia
     ACCESS_KEY  = aws_iam_access_key.programmatic_user_key.id
     SECRET_KEY  = aws_iam_access_key.programmatic_user_key.secret
     AWS_ACCOUNT = var.aws_account
+    EC2_USER    = var.ec2_user
   })
-
 }
-
 
 # Crear VPC en us-east-1
 #
@@ -109,8 +106,6 @@ resource "aws_vpc" "vpc" {
     var.tags,
     {
       Name    = "terraform-vpc"
-      Project = "PINF"
-      Group   = "Grupo6"
     }
   )
 }
@@ -128,8 +123,35 @@ resource "aws_subnet" "subnet_public" {
   vpc_id            = aws_vpc.vpc.id
   cidr_block        = var.public_subnet_cidrs[0]  # Usar CIDR para la subred pública
   map_public_ip_on_launch = true  # Permitir asignación de IP pública
+  tags = merge(
+    var.tags,
+    {
+      Name    = "subnet-public-1"
+    }
+  )
+}
+
+# Crear Subred Pública #2 en la segunda zona de disponibilidad
+#
+resource "aws_subnet" "subnet_public_2" {
+  availability_zone = element(data.aws_availability_zones.azs.names, 1)  # us-east-1b
+  vpc_id            = aws_vpc.vpc.id
+  cidr_block        = var.public_subnet_cidrs[1]  # Usar CIDR para la subred pública
+  map_public_ip_on_launch = true  # Permitir asignación de IP pública
   tags = {
-    Name = "subnet-public-1"
+    Name = "subnet-public-2"
+  }
+}
+
+# Crear Subred Pública #3 en la tercera zona de disponibilidad
+#
+resource "aws_subnet" "subnet_public_3" {
+  availability_zone = element(data.aws_availability_zones.azs.names, 2)  # us-east-1c
+  vpc_id            = aws_vpc.vpc.id
+  cidr_block        = var.public_subnet_cidrs[2]  # Usar CIDR para la subred pública
+  map_public_ip_on_launch = true  # Permitir asignación de IP pública
+  tags = {
+    Name = "subnet-public-3"
   }
 }
 
@@ -143,10 +165,13 @@ resource "aws_internet_gateway" "igw" {
 #
 resource "aws_route_table" "route_table" {
   vpc_id = aws_vpc.vpc.id
-  
-  tags = {
-    Name = "Route_Table"
-  }
+
+  tags = merge(
+    var.tags,
+    {
+      Name = "Route_Table"
+    }
+  )
 }
 
 # Agregar una ruta predeterminada (0.0.0.0/0) a la tabla de rutas
@@ -188,7 +213,7 @@ resource "aws_security_group" "sg" {
   }
 
   ingress {
-    description = "Allow  NGINX Exporter traffic"
+    description = "Allow NGINX Exporter traffic"
     from_port   = 9091
     to_port     = 9091
     protocol    = "tcp"
@@ -196,7 +221,7 @@ resource "aws_security_group" "sg" {
   }
 
   ingress {
-    description = "Allow   cadvisor traffic"
+    description = "Allow cAdvisor traffic"
     from_port   = 8080
     to_port     = 8080
     protocol    = "tcp"
@@ -204,7 +229,7 @@ resource "aws_security_group" "sg" {
   }
 
   ingress {
-    description = "Allow  prometheus traffic"
+    description = "Allow Prometheus traffic"
     from_port   = 9090
     to_port     = 9090
     protocol    = "tcp"
@@ -212,7 +237,7 @@ resource "aws_security_group" "sg" {
   }
 
   ingress {
-    description = "Allow  Grafana traffic"
+    description = "Allow Grafana traffic"
     from_port   = 3000
     to_port     = 3000
     protocol    = "tcp"
@@ -227,3 +252,99 @@ resource "aws_security_group" "sg" {
   }
 }
 
+# Crear una política de IAM para administrar EBS
+resource "aws_iam_policy" "ebs_management_policy" {
+  name        = "ebs-management-policy"
+  description = "Permite administrar volúmenes EBS"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = [
+          "ec2:AttachVolume",
+          "ec2:DetachVolume",
+          "ec2:CreateVolume",
+          "ec2:DeleteVolume",
+          "ec2:DescribeVolumes",
+          "ec2:DescribeVolumeStatus",
+          "ec2:DescribeVolumeAttribute",
+          "ec2:ModifyVolume",
+          "ec2:DescribeSnapshots",
+          "ec2:CreateSnapshot",
+          "ec2:DeleteSnapshot"
+        ]
+        Resource = "*"
+      }
+    ]
+  })
+}
+
+# Módulo de EKS
+module "eks" {
+  source  = "terraform-aws-modules/eks/aws"
+  version = "~> 20.0"
+
+  cluster_name    = "eks-mundos-e"
+  cluster_version = "1.30"
+
+  vpc_id                   = aws_vpc.vpc.id
+  subnet_ids               = [aws_subnet.subnet_public.id, aws_subnet.subnet_public_2.id, aws_subnet.subnet_public_3.id]  # Usar subnets en tres AZ diferentes
+  control_plane_subnet_ids = [aws_subnet.subnet_public.id, aws_subnet.subnet_public_2.id, aws_subnet.subnet_public_3.id]  # Usar subnets en tres AZ diferentes
+  enable_irsa = true # Habilita OIDC para IAM Roles for Service Accounts (IRSA)
+
+  eks_managed_node_groups = {
+    ng-mundos-e = {
+      min_size     = 3
+      max_size     = 3
+      desired_size = 3
+
+      instance_types = ["t3.small"]
+      capacity_type  = "ON_DEMAND"
+
+      # Configuración de zonas de disponibilidad
+      subnet_ids = [aws_subnet.subnet_public.id]
+
+      # Asociar el rol de IAM con permisos de EBS
+      iam_role_additional_policies = {
+        ebs_management = aws_iam_policy.ebs_management_policy.arn
+      }
+      tags = merge(
+        var.tags,
+        {
+          Name = "ng-mundos-e"
+        }
+
+      )
+      # Configurar la plantilla de lanzamiento para habilitar el acceso SSH
+      launch_template = {
+        name_prefix = "ng-mundos-e"
+        version     = "$Latest"
+
+        # Configuración de acceso SSH
+        key_name = "pin"  # Nombre de la clave SSH
+
+        # Configuración de seguridad para SSH
+        network_interfaces = [
+          {
+            associate_public_ip_address = true
+            security_groups            = [aws_security_group.sg.id]
+          }
+        ]
+      }
+    }
+  }
+  tags = merge(
+    var.tags,
+    {
+      Name = "eks-mundos-e"
+    }
+  )
+}
+
+# Asociar la política de EBS al rol de IAM del nodegroup
+resource "aws_iam_role_policy_attachment" "ebs_management_policy_attachment" {
+  role       = module.eks.eks_managed_node_groups["ng-mundos-e"].iam_role_name
+  policy_arn = aws_iam_policy.ebs_management_policy.arn
+}

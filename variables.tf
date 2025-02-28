@@ -109,3 +109,9 @@ variable "aws_account" {
   type        = string
   default     = 536697232168
 }
+
+variable "ec2_user" {
+  description = "usuario ec2"
+  type        = string
+  default     = "ubuntu"
+}
