@@ -449,8 +449,8 @@ module "eks" {
         programmatic_user = {
           policy_arn = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy"
           access_scope = {
-            namespaces = ["default"]
-            type       = "namespace"
+            #namespaces = ["default"]
+            type       = "cluster"
           }
         }
       }
