@@ -151,80 +151,25 @@ resource "aws_route_table_association" "private_rta" {
 
 # Grupo de seguridad para EC2 y EKS
 resource "aws_security_group" "sg" {
-  name        = "eks-ec2-security-group" # Cambiado para no empezar con sg-
+  name        = "eks-ec2-security-group"
   description = "Security group for EC2 admin and EKS nodes"
   vpc_id      = aws_vpc.vpc.id
 
-  # El resto permanece igual
-  ingress {
-    description = "SSH access"
-    from_port   = 22
-    to_port     = 22
-    protocol    = "tcp"
-    cidr_blocks = var.ssh_cidr
-  }
-
-  # HTTP
-  ingress {
-    description = "HTTP"
-    from_port   = 80
-    to_port     = 80
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  # HTTPS
-  ingress {
-    description = "HTTPS"
-    from_port   = 443
-    to_port     = 443
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-  
-  # Grafana
-  ingress {
-    description = "Grafana"
-    from_port   = 3000
-    to_port     = 3000
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-  
-  # Prometheus
-  ingress {
-    description = "Prometheus"
-    from_port   = 9090
-    to_port     = 9090
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-  
-  # cAdvisor
-  ingress {
-    description = "cAdvisor"
-    from_port   = 8080
-    to_port     = 8080
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-  
-  # NGINX Exporter
-  ingress {
-    description = "NGINX Exporter"
-    from_port   = 9091
-    to_port     = 9091
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  # Permitir comunicación interna entre las instancias en la VPC
+  # Permitir todo el tráfico interno en la VPC
   ingress {
     description = "All internal traffic"
     from_port   = 0
     to_port     = 0
     protocol    = "-1"
     cidr_blocks = [var.vpc_cidr]
+  }
+  
+  ingress {
+    description = "SSH access"
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = var.ssh_cidr
   }
 
   # Permitir todo el tráfico saliente
@@ -242,12 +187,12 @@ resource "aws_security_group" "sg" {
     }
   )
 }
+
 ###################
 # Par de claves SSH #
 ###################
 
 resource "aws_key_pair" "ssh_key" {
-  #key_name   = "eks-ssh-key"
   key_name   = var.key_name
   public_key = file("${var.profile_path}/pin.pub")
   
@@ -298,7 +243,6 @@ resource "aws_iam_instance_profile" "ec2_admin_profile" {
   name = var.ec2_admin_profile
   role = aws_iam_role.ec2_admin_role.name
   
-  # Evitar conflictos en caso de que el perfil ya exista
   lifecycle {
     create_before_destroy = true
   }
@@ -323,9 +267,20 @@ resource "aws_iam_user" "programmatic_user" {
   )
 }
 
+# Asignar políticas al usuario programático
 resource "aws_iam_user_policy_attachment" "programmatic_user_admin_policy" {
   user       = aws_iam_user.programmatic_user.name
   policy_arn = "arn:aws:iam::aws:policy/AdministratorAccess"
+}
+
+resource "aws_iam_user_policy_attachment" "programmatic_user_eks_cluster_policy" {
+  user       = aws_iam_user.programmatic_user.name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonEKSClusterPolicy"
+}
+
+resource "aws_iam_user_policy_attachment" "programmatic_user_eks_worker_node_policy" {
+  user       = aws_iam_user.programmatic_user.name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy"
 }
 
 resource "aws_iam_access_key" "programmatic_user_key" {
@@ -392,6 +347,8 @@ resource "aws_instance" "admin_server" {
     SECRET_KEY  = aws_iam_access_key.programmatic_user_key.secret
     AWS_ACCOUNT = var.aws_account
     EC2_USER    = var.ec2_user
+    EKS_CLUSTER_NAME = var.eks_cluster_name
+    AWS_REGION  = var.aws_region
   })
   
   tags = merge(
@@ -423,9 +380,19 @@ module "eks" {
   subnet_ids               = aws_subnet.private_subnets[*].id
   control_plane_subnet_ids = aws_subnet.private_subnets[*].id
   
-  # Habilitar OIDC para Roles de IAM para cuentas de servicio
-  enable_irsa = var.eks_enable_irsa
+  # Habilitar acceso público al endpoint del clúster
+  cluster_endpoint_public_access = true
   
+  # Habilitar OIDC para Roles de IAM para cuentas de servicio
+  enable_irsa = true
+
+  cluster_addons = {
+    coredns                = {}
+    eks-pod-identity-agent = {}
+    kube-proxy             = {}
+    vpc-cni                = {}
+  }
+
   # Grupo de nodos gestionados por EKS
   eks_managed_node_groups = {
     main_node_group = {
@@ -438,13 +405,11 @@ module "eks" {
       capacity_type  = var.eks_capacity_type
       ami_type       = "AL2_x86_64"
       
-      # Configuraciones que anteriormente estaban en la plantilla de lanzamiento
       key_name      = aws_key_pair.ssh_key.key_name
       disk_size     = var.eks_volume_size
       
       subnet_ids = aws_subnet.private_subnets[*].id
       
-      # Asignar la política de EBS
       iam_role_additional_policies = {
         ebs_management = aws_iam_policy.ebs_management_policy.arn
       }
@@ -459,20 +424,11 @@ module "eks" {
   }
   
   node_security_group_additional_rules = {
-    ingress_self_all = {
-      description = "Allow nodes to communicate with each other"
+    ingress_ec2_all = {
+      description = "Allow all traffic from EC2 instance"
       protocol    = "-1"
       from_port   = 0
       to_port     = 0
-      type        = "ingress"
-      self        = true
-    }
-    
-    ingress_ssh_all = {
-      description = "SSH access from private subnets"
-      protocol    = "tcp"
-      from_port   = 22
-      to_port     = 22
       type        = "ingress"
       cidr_blocks = [var.vpc_cidr]
     }
@@ -480,20 +436,31 @@ module "eks" {
   
   # Usar el nuevo método para la autenticación en lugar de los argumentos obsoletos
   authentication_mode = "API_AND_CONFIG_MAP"
-  
+  enable_cluster_creator_admin_permissions = true
+
   access_entries = {
     # Agregar usuario programático como administrador del cluster
     programmatic_user = {
-      #kubernetes_groups = ["system:masters"]
-      principal_arn     = "arn:aws:iam::${var.aws_account}:user/${var.programmatic_user}"
-      type              = "STANDARD"
+      kubernetes_groups = []
+      principal_arn = "arn:aws:iam::${var.aws_account}:user/${var.programmatic_user}"
+      type          = "STANDARD"
+      #policy_arns   = ["arn:aws:iam::aws:policy/AmazonEKSClusterAdminPolicy"]
+      policy_associations = {
+        programmatic_user = {
+          policy_arn = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy"
+          access_scope = {
+            namespaces = ["default"]
+            type       = "namespace"
+          }
+        }
+      }
     }
     
     # Agregar rol de EC2 admin como administrador del cluster
     admin_role = {
-      #kubernetes_groups = ["system:masters"]
-      principal_arn     = aws_iam_role.ec2_admin_role.arn
-      type              = "STANDARD"
+      principal_arn = aws_iam_role.ec2_admin_role.arn
+      type          = "STANDARD"
+      policy_arns   = ["arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy"]
     }
   }
   
@@ -503,4 +470,58 @@ module "eks" {
       Name = var.eks_cluster_name
     }
   )
+}
+
+###################
+# Configuración del EBS CSI Driver #
+###################
+
+# Habilitar OIDC provider para el clúster de EKS
+#resource "aws_iam_openid_connect_provider" "eks_oidc" {
+#  url = module.eks.cluster_oidc_issuer_url
+#
+#  client_id_list = ["sts.amazonaws.com"]
+#
+#  thumbprint_list = [data.tls_certificate.eks_oidc.certificates[0].sha1_fingerprint]
+#}
+
+# Obtener el certificado OIDC del clúster de EKS
+data "tls_certificate" "eks_oidc" {
+  url = module.eks.cluster_oidc_issuer_url
+}
+
+# Crear un rol de IAM para el EBS CSI Driver
+resource "aws_iam_role" "ebs_csi_driver_role" {
+  name = "AmazonEKS_EBS_CSI_DriverRole"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Principal = {
+          Federated = "arn:aws:iam::${var.aws_account}:oidc-provider/${replace(module.eks.cluster_oidc_issuer_url, "https://", "")}"
+        }
+        Action = "sts:AssumeRoleWithWebIdentity"
+        Condition = {
+          StringEquals = {
+            "${replace(module.eks.cluster_oidc_issuer_url, "https://", "")}:sub" = "system:serviceaccount:kube-system:aws-ebs-csi-driver"
+          }
+        }
+      }
+    ]
+  })
+
+  tags = merge(
+    var.tags,
+    {
+      Name = "AmazonEKS_EBS_CSI_DriverRole"
+    }
+  )
+}
+
+# Asignar la política AmazonEBSCSIDriverPolicy al rol
+resource "aws_iam_role_policy_attachment" "ebs_csi_driver_policy" {
+  role       = aws_iam_role.ebs_csi_driver_role.name
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy"
 }
