@@ -146,6 +146,7 @@ chmod 600 /home/${EC2_USER}/.ssh/pin.pem
 
 echo "crear script con comandos para administrar eks"
 cat <<EOFILE > /home/${EC2_USER}/script.sh  
+#!/bin/bash
 
 #VPC_ID=\$(aws ec2 describe-vpcs --filters "Name=tag:Name,Values=terraform-vpc" --query "Vpcs[0].VpcId" --output text)
 #SUBNET_IDS=\$(aws ec2 describe-subnets --filters "Name=vpc-id,Values=\$VPC_ID" --query "Subnets[*].SubnetId" --output text | tr '\\n' ',' | sed 's/,$//')
