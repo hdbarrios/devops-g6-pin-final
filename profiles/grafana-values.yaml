@@ -1,0 +1,10 @@
+---
+service:
+  type: LoadBalancer  # Exponer Grafana públicamente
+  port: 80
+
+persistence:
+  enabled: true       # Deshabilitar almacenamiento persistente si no lo necesitas
+
+adminUser: admin      # Usuario administrador
+adminPassword: admin  # Contraseña administrador (cámbiala en producción)

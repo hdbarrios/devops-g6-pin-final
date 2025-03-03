@@ -107,11 +107,64 @@ variable "programmatic_user" {
 variable "aws_account" {
   description = "Cuenta de AWS"
   type        = string
-  default     = 536697232168
+  default     = "536697232168"
 }
 
 variable "ec2_user" {
   description = "usuario ec2"
   type        = string
   default     = "ubuntu"
+}
+
+variable "eks_cluster_name" {
+  default = "eks-mundos-e"
+  type    = string
+}
+
+variable "eks_cluster_version" {
+  default = "1.30"
+  type    = string
+}
+
+variable "eks_enable_irsa" {
+  default = true
+  type    = bool
+}
+
+variable "eks_min_size" {
+  default = 3
+}
+
+variable "eks_max_size" {
+  default = 3
+}
+
+variable "eks_desired_size" {
+  default = 3
+}
+
+variable "eks_capacity_type" {
+  default = "ON_DEMAND"
+}
+
+variable "eks_instance_types" {
+  default = "t3.small"
+}
+
+variable "eks_associate_public_ip_address" {
+  default = true
+  type    = bool
+}
+
+variable "eks_volume_size" {
+  default = 20
+}
+variable "eks_volume_type" {
+  default = "gp2"
+  type    = string
+}
+
+variable "eks_device_name" {
+  default = "/dev/xvda"
+  type    = string
 }
