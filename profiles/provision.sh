@@ -1,11 +1,6 @@
 #!/bin/bash
 
 # ===========================================================================================================================
-# sudo para usuario ubuntu
-#echo "ubuntu ALL=(ALL) NOPASSWD:ALL" | sudo tee /etc/sudoers
-#echo "ubuntu ALL=(ALL) NOPASSWD:ALL" | sudo tee /etc/sudoers.d/ubuntu
-#chmod 440 /etc/sudoers.d/ubuntu
-# ===========================================================================================================================
 # Local Time:
 echo -e "configurar local time"
 sudo rm -fv /etc/localtime
@@ -101,11 +96,6 @@ echo "deb https://baltocdn.com/helm/stable/debian/ all main" | sudo tee /etc/apt
 sudo apt-get update
 sudo apt-get install -y helm
 
-# Permisos para usar docker: en caso de querer crear/compilar imagen
-#sudo usermod -aG docker ${EC2_USER}
-#sudo systemctl start docker
-#sudo systemctl enable docker
-
 # ===========================================================================================================================
 #
 #
@@ -144,237 +134,37 @@ kCffR0L9ievLmM5WO+BQIA==
 EOF
 chmod 600 /home/${EC2_USER}/.ssh/pin.pem
 
+# ===========================================================================================================================
+# files:
+#
+
 echo "crear script con comandos para administrar eks"
 cat <<EOFILE > /home/${EC2_USER}/script.sh  
 #!/bin/bash
 
-#VPC_ID=\$(aws ec2 describe-vpcs --filters "Name=tag:Name,Values=terraform-vpc" --query "Vpcs[0].VpcId" --output text)
-#SUBNET_IDS=\$(aws ec2 describe-subnets --filters "Name=vpc-id,Values=\$VPC_ID" --query "Subnets[*].SubnetId" --output text | tr '\\n' ',' | sed 's/,$//')
-
-## Crear el cluster EKS
-#echo "Creando el cluster EKS..."
-#eksctl create cluster \
-#  --name eks-mundos-e \
-#  --version 1.30 \
-#  --region us-east-1 \
-#  --node-type t3.small \
-#  --nodes 3 \
-#  --with-oidc \
-#  --ssh-access \
-#  --ssh-public-key pin \
-#  --managed \
-#  --full-ecr-access \
-#  --zones us-east-1a,us-east-1b,us-east-1c \
-#  --nodegroup-name ng-mundos-e 
-##  --node-iam-policies "arn:aws:iam::aws:policy/AmazonEBSCSIDriverPolicy" \
-##  --node-iam-policies "arn:aws:iam::aws:policy/AmazonEC2FullAccess"
-##  --vpc-public-subnets \$SUBNET_IDS \
-##  --vpc-id \$VPC_ID
-
-# Verificar la creación del cluster
-#
 echo "Verificando el cluster EKS..."
 kubectl get nodes -o wide
 
-# Instalar driver EBS
-# la recomendacion de la consigna es esta, sin embargo se prueba con helm para contrl de versiones 
-#kubectl apply -k "github.com/kubernetes-sigs/aws-ebs-csidriver/deploy/kubernetes/overlays/stable/?ref=release-1.20"
-
-# habilitar/instalar CSI Driver EBS para asegurar que se pueda gestionar volumenes EBS en k8s
-#
-helm repo add aws-ebs-csi-driver https://kubernetes-sigs.github.io/aws-ebs-csi-driver
-helm repo update
-helm install aws-ebs-csi-driver aws-ebs-csi-driver/aws-ebs-csi-driver \
-  --namespace kube-system \
-  --set controller.serviceAccount.create=true \
-  --set controller.serviceAccount.annotations."eks\.amazonaws\.com/role-arn"=arn:aws:iam::\${AWS_ACCOUNT}:role/AmazonEKS_EBS_CSI_DriverRole
-
-# habilitar OIDC
-eksctl utils associate-iam-oidc-provider --cluster eks-mundos-e --approve
-
-# Obtener el ID del proveedor OIDC
-var_oidc=\$(aws eks describe-cluster --name eks-mundos-e --query "cluster.identity.oidc.issuer" --output text | cut -d '/' -f 5)
-echo \$var_oidc
-
-# crear Rol para el EBS CSI Driver
-aws iam create-role \
-  --role-name AmazonEKS_EBS_CSI_DriverRole \
-  --assume-role-policy-document "{
-    \"Version\": \"2012-10-17\",
-    \"Statement\": [
-      {
-        \"Effect\": \"Allow\",
-        \"Principal\": {
-          \"Federated\": \"arn:aws:iam::\${AWS_ACCOUNT}:oidc-provider/oidc.eks.us-east-1.amazonaws.com/id/\$var_oidc\"
-        },
-        \"Action\": \"sts:AssumeRoleWithWebIdentity\",
-        \"Condition\": {
-          \"StringEquals\": {
-            \"oidc.eks.us-east-1.amazonaws.com/id/\$var_oidc:sub\": \"system:serviceaccount:kube-system:aws-ebs-csi-driver\"
-          }
-        }
-      }
-    ]
-  }"
-
-# Adjuntar la política AmazonEBSCSIDriverPolicy al rol
-aws iam attach-role-policy \
-  --role-name AmazonEKS_EBS_CSI_DriverRole \
-  --policy-arn arn:aws:iam::aws:policy/AmazonEBSCSIDriverPolicy
-
-# Obtener el ARN del rol
-aws iam get-role --role-name AmazonEKS_EBS_CSI_DriverRole --query "Role.Arn" --output text
-
-# ========================================================================================================
-# crear pod nginx
-#
-echo -e '<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lista de Integrantes</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            margin: 20px;
-        }
-        table {
-            width: 50%;
-            margin: 0 auto;
-            border-collapse: collapse;
-            text-align: left;
-        }
-        th, td {
-            border: 1px solid #000;
-            padding: 10px;
-        }
-        th {
-            background-color: #f2f2f2;
-        }
-        img {
-            margin-top: 20px;
-            max-width: 300px;
-            height: auto;
-        }
-    </style>
-</head>
-<body>
-    <h1>edu.mundose.com - Proyecto Integracion Final</h1>
-    <table>
-        <tr>
-            <th>Integrantes</th>
-            <th>Email</th>
-        </tr>
-        <tr>
-            <td>Juan Pablo Heyda</td>
-            <td>juanpabloh.123@gmail.com</td>
-        </tr>
-        <tr>
-            <td>Renzo Emiliano Carletti</td>
-            <td>renzocarletti@hotmail.com / pipito1498@gmail.com</td>
-        </tr>
-        <tr>
-            <td>Johanna Dominguez</td>
-            <td>johisd9@hotmail.com</td>
-        </tr>
-        <tr>
-            <td>Lucas Bufano</td>
-            <td>lucas.bufano2@gmail.com</td>
-        </tr>
-        <tr>
-            <td>Hector Barrios</td>
-            <td>hdbarrios@gmail.com</td>
-        </tr>
-    </table>
-    <img src="https://tf-bucket-imgs.s3.us-east-1.amazonaws.com/img/grupo6.png" alt="Grupo6">
-</body>
-</html>' > /home/ubuntu/index.html
-
-cat <<EOF > /home/ubuntu/nginx-values.yaml
-service:
-  type: LoadBalancer
-  port: 80
-replicaCount: 2
-EOF
-
-kubectl create namespace mundose
-kubectl create configmap nginx-index-html --namespace mundose --from-file=/home/ubuntu/index.html
-
 helm repo add bitnami https://charts.bitnami.com/bitnami
-helm repo update
-
-helm install nginx bitnami/nginx \
-  --namespace mundose \
-  --create-namespace \
-  --set service.type=LoadBalancer \
-  --set service.port=80 \
-  --set volumeMounts[0].name=nginx-index \
-  --set volumeMounts[0].mountPath=/usr/share/nginx/html \
-  --set volumes[0].name=nginx-index \
-  --set volumes[0].configMap.name=nginx-index-html \
-  --set volumes[0].configMap.items[0].key=index.html \
-  --set volumes[0].configMap.items[0].path=index.html
-
-kubectl -n mundose get pods
-kubectl -n mundose get svc
-
-# Instalando prometheus y grafana
-#
-
 helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
 helm repo add grafana https://grafana.github.io/helm-charts
 helm repo update
 
+helm upgrade --install nginx-webserver oci://registry-1.docker.io/bitnamicharts/nginx --namespace mundose --create-namespace
 
-# Crear archivo prometheus.yml en /home/ubuntu (directorio por defecto)
-cat <<EOF > /home/ubuntu/values-prometheus.yaml
-global:
-  scrape_interval: 15s
+kubectl -n mundose get pods
+kubectl -n mundose get svc
 
-scrape_configs:
-  - job_name: 'nginx'
-    static_configs:
-      - targets: ['nginx_exporter:80']
-
-alertmanager:
-  enabled: false        # Deshabilitar Alertmanager si no lo necesitas
-
-pushgateway:
-  enabled: false        # Deshabilitar Pushgateway si no lo necesitas
-
-server:
-  persistentVolume:
-    enabled: false      # Deshabilitar almacenamiento persistente si no lo necesitas
-  service:
-    type: LoadBalancer  # Exponer Prometheus públicamente
-    port: 80
-
-EOF
 
 helm install prometheus prometheus-community/prometheus \
-  --namespace monitoring \
+  --namespace prometheus \
   --create-namespace \
-  --values values-prometheus.yaml
-
-cat <<EOF > /home/ubuntu/values-grafana.yml
-# values-grafana.yaml
-service:
-  type: LoadBalancer  # Exponer Grafana públicamente
-  port: 80
-
-persistence:
-  enabled: true       # Deshabilitar almacenamiento persistente si no lo necesitas
-
-adminUser: admin      # Usuario administrador
-adminPassword: admin  # Contraseña administrador (cámbiala en producción)
-EOF
+  --values prometheus-values.yaml
 
 helm install grafana grafana/grafana \
-  --namespace monitoring \
+  --namespace grafana \
   --create-namespace \
-  --values values-grafana.yaml
+  --values grafana-values.yaml
 
 kubectl get pods -n monitoring
 kubectl get svc -n monitoring

@@ -172,6 +172,14 @@ resource "aws_security_group" "sg" {
     cidr_blocks = var.ssh_cidr
   }
 
+  ingress {
+    description = "port-forward prometheus"
+    from_port   = 8080
+    to_port     = 8080
+    protocol    = "tcp"
+    cidr_blocks = var.ssh_cidr
+  }
+
   # Permitir todo el tráfico saliente
   egress {
     from_port   = 0
@@ -368,6 +376,44 @@ resource "aws_instance" "admin_server" {
 # Cluster EKS #
 ###################
 
+# Crear un rol de IAM para el EBS CSI Driver
+module "ebs_csi_driver_irsa" {
+  source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
+  version = "~> 5.20"
+
+  role_name_prefix = "ebs-csi-driver-"
+
+  attach_ebs_csi_policy = true
+
+  oidc_providers = {
+    main = {
+      provider_arn               = module.eks.oidc_provider_arn
+      namespace_service_accounts = ["kube-system:ebs-csi-controller-sa"]
+    }
+  }
+
+  tags = var.tags
+}
+
+# Crear un rol de IAM para el EFS CSI Driver
+module "efs_csi_driver_irsa" {
+  source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
+  version = "~> 5.20"
+
+  role_name_prefix = "efs-csi-driver-"
+
+  attach_efs_csi_policy = true
+
+  oidc_providers = {
+    main = {
+      provider_arn               = module.eks.oidc_provider_arn
+      namespace_service_accounts = ["kube-system:efs-csi-controller-sa"]
+    }
+  }
+
+  tags = var.tags
+}
+
 module "eks" {
   source  = "terraform-aws-modules/eks/aws"
   version = "~> 20.0"
@@ -386,19 +432,36 @@ module "eks" {
   # Habilitar OIDC para Roles de IAM para cuentas de servicio
   enable_irsa = true
 
+  # Configuración de addons
   cluster_addons = {
-    eks-pod-identity-agent = {}
-    kube-proxy             = {}
-    vpc-cni                = {}
+    eks-pod-identity-agent = {
+      most_recent = true
+    }
+    kube-proxy = {
+      most_recent = true
+    }
+    vpc-cni = {
+      most_recent = true
+    }
+    coredns = {
+      most_recent = true
+    }
+    aws-ebs-csi-driver = {
+      service_account_role_arn = module.ebs_csi_driver_irsa.iam_role_arn
+    }
+    aws-efs-csi-driver = {
+      service_account_role_arn = module.efs_csi_driver_irsa.iam_role_arn
+    }
   }
 
   # Grupo de nodos gestionados por EKS
   eks_managed_node_groups = {
     main_node_group = {
-      name         = "ng-${var.eks_cluster_name}"
-      min_size     = var.eks_min_size
-      max_size     = var.eks_max_size
-      desired_size = var.eks_desired_size
+      name                 = "ng-${var.eks_cluster_name}"
+      min_size             = var.eks_min_size
+      max_size             = var.eks_max_size
+      desired_size         = var.eks_desired_size
+      force_update_version = true
       
       instance_types = [var.eks_instance_types]
       capacity_type  = var.eks_capacity_type
@@ -475,6 +538,7 @@ data "aws_security_group" "eks_cluster_sg" {
     name   = "tag:Name"
     values = ["${var.eks_cluster_name}-cluster"]  # Nombre del SG del clúster de EKS
   }
+  depends_on = [module.eks]
 }
 
 resource "aws_security_group_rule" "eks_allow_ec2_traffic" {
