@@ -387,7 +387,6 @@ module "eks" {
   enable_irsa = true
 
   cluster_addons = {
-    coredns                = {}
     eks-pod-identity-agent = {}
     kube-proxy             = {}
     vpc-cni                = {}
@@ -444,12 +443,10 @@ module "eks" {
       kubernetes_groups = []
       principal_arn = "arn:aws:iam::${var.aws_account}:user/${var.programmatic_user}"
       type          = "STANDARD"
-      #policy_arns   = ["arn:aws:iam::aws:policy/AmazonEKSClusterAdminPolicy"]
       policy_associations = {
         programmatic_user = {
           policy_arn = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy"
           access_scope = {
-            #namespaces = ["default"]
             type       = "cluster"
           }
         }
@@ -472,18 +469,26 @@ module "eks" {
   )
 }
 
+# Obtener el grupo de seguridad del clúster de EKS
+data "aws_security_group" "eks_cluster_sg" {
+  filter {
+    name   = "tag:Name"
+    values = ["${var.eks_cluster_name}-cluster"]  # Nombre del SG del clúster de EKS
+  }
+}
+
+resource "aws_security_group_rule" "eks_allow_ec2_traffic" {
+  type                     = "ingress"
+  from_port                = 0
+  to_port                  = 0
+  protocol                 = "-1"
+  source_security_group_id = aws_security_group.sg.id  # Referencia al SG de la instancia EC2
+  security_group_id        = data.aws_security_group.eks_cluster_sg.id  # Referencia al SG del EKS
+}
+
 ###################
 # Configuración del EBS CSI Driver #
 ###################
-
-# Habilitar OIDC provider para el clúster de EKS
-#resource "aws_iam_openid_connect_provider" "eks_oidc" {
-#  url = module.eks.cluster_oidc_issuer_url
-#
-#  client_id_list = ["sts.amazonaws.com"]
-#
-#  thumbprint_list = [data.tls_certificate.eks_oidc.certificates[0].sha1_fingerprint]
-#}
 
 # Obtener el certificado OIDC del clúster de EKS
 data "tls_certificate" "eks_oidc" {
