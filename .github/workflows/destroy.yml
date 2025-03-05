@@ -1,0 +1,73 @@
+name: Terraform Destroy
+on:
+ workflow_dispatch:
+   branches:
+     - master
+     - test
+
+jobs:
+  terraform-destroy:
+    runs-on: ubuntu-latest
+    env:
+       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+       AWS_REGION: 'us-east-1'
+       TERRAFORM_VERSION: "1.10.2"
+
+    steps:
+    - uses: actions/checkout@v4
+      with:
+         #ref: ${{ github.event.pull_request.head.sha }} # se refiere al commit más reciente del branch de origen del PR (es decir, el branch desde el cual se hizo el pull request).
+         ref: ${{ github.sha }} # github.sha hace referencia al commit hash del evento actual, que es el commit específico que activó el workflow. En el caso de un push o un pull_request, este es el commit que causó que el workflow se ejecutara.
+         submodules: true
+         fetch-depth: 1
+
+    - name: Install Terraform
+      run: |
+        tf_version=$TERRAFORM_VERSION
+        wget https://releases.hashicorp.com/terraform/"$tf_version"/terraform_"$tf_version"_linux_amd64.zip
+        unzip terraform_"$tf_version"_linux_amd64.zip
+        sudo mv terraform /usr/local/bin/
+           
+    - name: Install kubectl
+      run: |
+        curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+        sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+
+    - name: Install Helm
+      run: |
+        curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+
+    - name: Install AWS CLI
+      run: |
+        curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+        unzip awscliv2.zip
+        sudo ./aws/install
+
+    - name: Uninstall
+      run: |
+        kubectl delete ns grafana
+        kubectl delete ns prometheus
+        kubectl delete ns mundose
+
+    - name: Verify Terraform version
+      run: terraform version
+
+    - name: Terraform init
+      working-directory: terraform-pinf
+      run: |
+        terraform init -input=false
+        #terraform init -input=false -backend-config="profile=terraform-admin"
+
+    - name: Terraform validation
+      working-directory: terraform-pinf
+      run: |
+        terraform validate
+
+    - name: Terraform destroy
+      working-directory: terraform-pinf
+      id: destroy
+      run: |
+        terraform destroy -var-file=profiles/pinf.tfvars -auto-approve
+        #terraform apply -destroy -var-file=profiles/pinf.tfvars -auto-approve
+
