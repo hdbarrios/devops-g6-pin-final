@@ -134,7 +134,7 @@ jobs:
        kubectl get svc -n prometheus
 
        echo "List PV:"
-       kubectl get pv --all-namespace
+       kubectl get pv 
      
     - name: Port-forward prometheus-service
       run: |
