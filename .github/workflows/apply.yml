@@ -58,6 +58,7 @@ jobs:
   Validacion_Infra:
     runs-on: ubuntu-latest
     needs: terraform_apply  # Este job depende del éxito del job "terraform_apply"
+    if: github.event_name == 'push'  # Este job solo se ejecuta en eventos de push
     env:
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -82,6 +83,11 @@ jobs:
 
     - name: Verificando el cluster EKS
       run: |
+
+       aws eks update-kubeconfig --name mundos-e --region us-east-1
+       aws ec2 describe-instances --query "Reservations[*].Instances[*].[InstanceId, InstanceType, State.Name, PublicIpAddress, PrivateIpAddress]" --output table
+       aws eks describe-cluster --name mundos-e --region us-east-1 --query "cluster.accessConfig"
+
        kubectl get nodes -o wide
        
        helm repo add bitnami https://charts.bitnami.com/bitnami
