@@ -19,8 +19,8 @@ serverBlock: |
       index index.html;
     }
     location /pinfg6 {
-      root /app;
-      try_files /grupo6.html =404;
+      alias /usr/share/nginx/html/pinfg6;
+      index index.html;
     }
   }
 
@@ -31,7 +31,7 @@ extraVolumes:
 
 extraVolumeMounts:
   - name: custom-html
-    mountPath: /app
+    mountPath: /usr/share/nginx/html/pinfgrupo6 
 
 extraDeploy:
   - apiVersion: v1
