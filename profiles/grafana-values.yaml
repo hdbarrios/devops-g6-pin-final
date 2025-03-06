@@ -1876,7 +1876,7 @@ dashboards:
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "eeexzqbtg0f0ge"
+                "uid": "-- Grafana --"
               },
               "fieldConfig": {
                 "defaults": {
@@ -1944,7 +1944,7 @@ dashboards:
                 {
                   "datasource": {
                     "type": "prometheus",
-                    "uid": "eeexzqbtg0f0ge"
+                    "uid": "-- Grafana --"
                   },
                   "expr": "sum(kube_pod_info{node=~\"$node\"}) / sum(kube_node_status_allocatable_pods{node=~\".*\"})",
                   "format": "time_series",
@@ -1958,7 +1958,7 @@ dashboards:
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "eeexzqbtg0f0ge"
+                "uid": "-- Grafana --"
               },
               "fieldConfig": {
                 "defaults": {
@@ -2026,7 +2026,7 @@ dashboards:
                 {
                   "datasource": {
                     "type": "prometheus",
-                    "uid": "eeexzqbtg0f0ge"
+                    "uid": "-- Grafana --"
                   },
                   "expr": "sum(kube_pod_container_resource_requests_cpu_cores{node=~\"$node\"}) / sum(kube_node_status_allocatable_cpu_cores{node=~\"$node\"})",
                   "format": "time_series",
@@ -2040,7 +2040,7 @@ dashboards:
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "eeexzqbtg0f0ge"
+                "uid": "-- Grafana --"
               },
               "fieldConfig": {
                 "defaults": {
@@ -2108,7 +2108,7 @@ dashboards:
                 {
                   "datasource": {
                     "type": "prometheus",
-                    "uid": "eeexzqbtg0f0ge"
+                    "uid": "-- Grafana --"
                   },
                   "expr": "sum(kube_pod_container_resource_requests_memory_bytes{node=~\"$node\"}) / sum(kube_node_status_allocatable_memory_bytes{node=~\"$node\"})",
                   "format": "time_series",
@@ -2122,7 +2122,7 @@ dashboards:
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "eeexzqbtg0f0ge"
+                "uid": "-- Grafana --"
               },
               "fieldConfig": {
                 "defaults": {
@@ -2190,7 +2190,7 @@ dashboards:
                 {
                   "datasource": {
                     "type": "prometheus",
-                    "uid": "eeexzqbtg0f0ge"
+                    "uid": "-- Grafana --"
                   },
                   "expr": "(sum (node_filesystem_size{nodename=~\"$node\"}) - sum (node_filesystem_free{nodename=~\"$node\"})) / sum (node_filesystem_size{nodename=~\"$node\"})",
                   "format": "time_series",
@@ -2204,7 +2204,7 @@ dashboards:
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "eeexzqbtg0f0ge"
+                "uid": "-- Grafana --"
               },
               "fieldConfig": {
                 "defaults": {
@@ -2287,7 +2287,7 @@ dashboards:
                 {
                   "datasource": {
                     "type": "prometheus",
-                    "uid": "eeexzqbtg0f0ge"
+                    "uid": "-- Grafana --"
                   },
                   "expr": "sum(kube_node_status_allocatable_pods{node=~\"$node\"})",
                   "format": "time_series",
@@ -2298,7 +2298,7 @@ dashboards:
                 {
                   "datasource": {
                     "type": "prometheus",
-                    "uid": "eeexzqbtg0f0ge"
+                    "uid": "-- Grafana --"
                   },
                   "expr": "sum(kube_node_status_capacity_pods{node=~\"$node\"})",
                   "format": "time_series",
@@ -2309,7 +2309,7 @@ dashboards:
                 {
                   "datasource": {
                     "type": "prometheus",
-                    "uid": "eeexzqbtg0f0ge"
+                    "uid": "-- Grafana --"
                   },
                   "expr": "sum(kube_pod_info{node=~\"$node\"})",
                   "format": "time_series",
@@ -2324,7 +2324,7 @@ dashboards:
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "eeexzqbtg0f0ge"
+                "uid": "-- Grafana --"
               },
               "fieldConfig": {
                 "defaults": {
@@ -2407,7 +2407,7 @@ dashboards:
                 {
                   "datasource": {
                     "type": "prometheus",
-                    "uid": "eeexzqbtg0f0ge"
+                    "uid": "-- Grafana --"
                   },
                   "expr": "sum(kube_node_status_capacity_cpu_cores{node=~\"$node\"})",
                   "format": "time_series",
@@ -2418,7 +2418,7 @@ dashboards:
                 {
                   "datasource": {
                     "type": "prometheus",
-                    "uid": "eeexzqbtg0f0ge"
+                    "uid": "-- Grafana --"
                   },
                   "expr": "sum(kube_node_status_allocatable_cpu_cores{node=~\"$node\"})",
                   "format": "time_series",
@@ -2429,7 +2429,7 @@ dashboards:
                 {
                   "datasource": {
                     "type": "prometheus",
-                    "uid": "eeexzqbtg0f0ge"
+                    "uid": "-- Grafana --"
                   },
                   "expr": "sum(kube_pod_container_resource_requests_cpu_cores{node=~\"$node\"})",
                   "format": "time_series",
@@ -2444,7 +2444,7 @@ dashboards:
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "eeexzqbtg0f0ge"
+                "uid": "-- Grafana --"
               },
               "fieldConfig": {
                 "defaults": {
@@ -2527,7 +2527,7 @@ dashboards:
                 {
                   "datasource": {
                     "type": "prometheus",
-                    "uid": "eeexzqbtg0f0ge"
+                    "uid": "-- Grafana --"
                   },
                   "expr": "sum(kube_node_status_allocatable_memory_bytes{node=~\"$node\"})",
                   "format": "time_series",
@@ -2538,7 +2538,7 @@ dashboards:
                 {
                   "datasource": {
                     "type": "prometheus",
-                    "uid": "eeexzqbtg0f0ge"
+                    "uid": "-- Grafana --"
                   },
                   "expr": "sum(kube_node_status_capacity_memory_bytes{node=~\"$node\"})",
                   "format": "time_series",
@@ -2549,7 +2549,7 @@ dashboards:
                 {
                   "datasource": {
                     "type": "prometheus",
-                    "uid": "eeexzqbtg0f0ge"
+                    "uid": "-- Grafana --"
                   },
                   "expr": "sum(kube_pod_container_resource_requests_memory_bytes{node=~\"$node\"})",
                   "format": "time_series",
@@ -2564,7 +2564,7 @@ dashboards:
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "eeexzqbtg0f0ge"
+                "uid": "-- Grafana --"
               },
               "fieldConfig": {
                 "defaults": {
@@ -2647,7 +2647,7 @@ dashboards:
                 {
                   "datasource": {
                     "type": "prometheus",
-                    "uid": "eeexzqbtg0f0ge"
+                    "uid": "-- Grafana --"
                   },
                   "expr": "sum(node_filesystem_size{nodename=~\"$node\"}) - sum(node_filesystem_free{nodename=~\"$node\"})",
                   "format": "time_series",
@@ -2658,7 +2658,7 @@ dashboards:
                 {
                   "datasource": {
                     "type": "prometheus",
-                    "uid": "eeexzqbtg0f0ge"
+                    "uid": "-- Grafana --"
                   },
                   "expr": "sum(node_filesystem_size{nodename=~\"$node\"})",
                   "format": "time_series",
@@ -2692,7 +2692,7 @@ dashboards:
               ],
               "datasource": {
                 "type": "prometheus",
-                "uid": "eeexzqbtg0f0ge"
+                "uid": "-- Grafana --"
               },
               "fieldConfig": {
                 "defaults": {},
@@ -2766,7 +2766,7 @@ dashboards:
                 {
                   "datasource": {
                     "type": "prometheus",
-                    "uid": "eeexzqbtg0f0ge"
+                    "uid": "-- Grafana --"
                   },
                   "expr": "kube_deployment_status_replicas{namespace=~\"$namespace\"}",
                   "format": "time_series",
@@ -2784,7 +2784,7 @@ dashboards:
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "eeexzqbtg0f0ge"
+                "uid": "-- Grafana --"
               },
               "fieldConfig": {
                 "defaults": {
@@ -2846,7 +2846,7 @@ dashboards:
                 {
                   "datasource": {
                     "type": "prometheus",
-                    "uid": "eeexzqbtg0f0ge"
+                    "uid": "-- Grafana --"
                   },
                   "expr": "sum(kube_deployment_status_replicas{namespace=~\"$namespace\"})",
                   "format": "time_series",
@@ -2860,7 +2860,7 @@ dashboards:
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "eeexzqbtg0f0ge"
+                "uid": "-- Grafana --"
               },
               "fieldConfig": {
                 "defaults": {
@@ -2922,7 +2922,7 @@ dashboards:
                 {
                   "datasource": {
                     "type": "prometheus",
-                    "uid": "eeexzqbtg0f0ge"
+                    "uid": "-- Grafana --"
                   },
                   "expr": "sum(kube_deployment_status_replicas_updated{namespace=~\"$namespace\"})",
                   "format": "time_series",
@@ -2936,7 +2936,7 @@ dashboards:
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "eeexzqbtg0f0ge"
+                "uid": "-- Grafana --"
               },
               "fieldConfig": {
                 "defaults": {
@@ -2998,7 +2998,7 @@ dashboards:
                 {
                   "datasource": {
                     "type": "prometheus",
-                    "uid": "eeexzqbtg0f0ge"
+                    "uid": "-- Grafana --"
                   },
                   "expr": "sum(kube_deployment_status_replicas_unavailable{namespace=~\"$namespace\"})",
                   "format": "time_series",
@@ -3025,7 +3025,7 @@ dashboards:
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "eeexzqbtg0f0ge"
+                "uid": "-- Grafana --"
               },
               "fieldConfig": {
                 "defaults": {
@@ -3087,7 +3087,7 @@ dashboards:
                 {
                   "datasource": {
                     "type": "prometheus",
-                    "uid": "eeexzqbtg0f0ge"
+                    "uid": "-- Grafana --"
                   },
                   "expr": "sum(kube_node_info{node=~\"$node\"})",
                   "format": "time_series",
@@ -3101,7 +3101,7 @@ dashboards:
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "eeexzqbtg0f0ge"
+                "uid": "-- Grafana --"
               },
               "fieldConfig": {
                 "defaults": {
@@ -3166,7 +3166,7 @@ dashboards:
                 {
                   "datasource": {
                     "type": "prometheus",
-                    "uid": "eeexzqbtg0f0ge"
+                    "uid": "-- Grafana --"
                   },
                   "expr": "sum(kube_node_status_condition{condition=\"OutOfDisk\", node=~\"$node\", status=\"true\"})",
                   "format": "time_series",
@@ -3180,7 +3180,7 @@ dashboards:
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "eeexzqbtg0f0ge"
+                "uid": "-- Grafana --"
               },
               "fieldConfig": {
                 "defaults": {
@@ -3245,7 +3245,7 @@ dashboards:
                 {
                   "datasource": {
                     "type": "prometheus",
-                    "uid": "eeexzqbtg0f0ge"
+                    "uid": "-- Grafana --"
                   },
                   "expr": "sum(kube_node_spec_unschedulable{node=~\"$node\"})",
                   "format": "time_series",
@@ -3272,7 +3272,7 @@ dashboards:
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "eeexzqbtg0f0ge"
+                "uid": "-- Grafana --"
               },
               "fieldConfig": {
                 "defaults": {
@@ -3338,7 +3338,7 @@ dashboards:
                 {
                   "datasource": {
                     "type": "prometheus",
-                    "uid": "eeexzqbtg0f0ge"
+                    "uid": "-- Grafana --"
                   },
                   "expr": "sum(kube_pod_status_phase{namespace=~\"$namespace\", phase=\"Running\"})",
                   "format": "time_series",
@@ -3353,7 +3353,7 @@ dashboards:
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "eeexzqbtg0f0ge"
+                "uid": "-- Grafana --"
               },
               "fieldConfig": {
                 "defaults": {
@@ -3419,7 +3419,7 @@ dashboards:
                 {
                   "datasource": {
                     "type": "prometheus",
-                    "uid": "eeexzqbtg0f0ge"
+                    "uid": "-- Grafana --"
                   },
                   "expr": "sum(kube_pod_status_phase{namespace=~\"$namespace\", phase=\"Pending\"})",
                   "format": "time_series",
@@ -3434,7 +3434,7 @@ dashboards:
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "eeexzqbtg0f0ge"
+                "uid": "-- Grafana --"
               },
               "fieldConfig": {
                 "defaults": {},
@@ -3453,7 +3453,7 @@ dashboards:
                 {
                   "datasource": {
                     "type": "prometheus",
-                    "uid": "eeexzqbtg0f0ge"
+                    "uid": "-- Grafana --"
                   },
                   "expr": "sum(kube_pod_status_phase{namespace=~\"$namespace\", phase=\"Failed\"})",
                   "format": "time_series",
@@ -3468,7 +3468,7 @@ dashboards:
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "eeexzqbtg0f0ge"
+                "uid": "-- Grafana --"
               },
               "fieldConfig": {
                 "defaults": {},
@@ -3487,7 +3487,7 @@ dashboards:
                 {
                   "datasource": {
                     "type": "prometheus",
-                    "uid": "eeexzqbtg0f0ge"
+                    "uid": "-- Grafana --"
                   },
                   "expr": "sum(kube_pod_status_phase{namespace=~\"$namespace\", phase=\"Succeeded\"})",
                   "format": "time_series",
@@ -3502,7 +3502,7 @@ dashboards:
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "eeexzqbtg0f0ge"
+                "uid": "-- Grafana --"
               },
               "fieldConfig": {
                 "defaults": {},
@@ -3521,7 +3521,7 @@ dashboards:
                 {
                   "datasource": {
                     "type": "prometheus",
-                    "uid": "eeexzqbtg0f0ge"
+                    "uid": "-- Grafana --"
                   },
                   "expr": "sum(kube_pod_status_phase{namespace=~\"$namespace\", phase=\"Unknown\"})",
                   "format": "time_series",
@@ -3549,7 +3549,7 @@ dashboards:
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "eeexzqbtg0f0ge"
+                "uid": "-- Grafana --"
               },
               "fieldConfig": {
                 "defaults": {},
@@ -3568,7 +3568,7 @@ dashboards:
                 {
                   "datasource": {
                     "type": "prometheus",
-                    "uid": "eeexzqbtg0f0ge"
+                    "uid": "-- Grafana --"
                   },
                   "expr": "sum(kube_pod_container_status_running{namespace=~\"$namespace\"})",
                   "format": "time_series",
@@ -3582,7 +3582,7 @@ dashboards:
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "eeexzqbtg0f0ge"
+                "uid": "-- Grafana --"
               },
               "fieldConfig": {
                 "defaults": {},
@@ -3601,7 +3601,7 @@ dashboards:
                 {
                   "datasource": {
                     "type": "prometheus",
-                    "uid": "eeexzqbtg0f0ge"
+                    "uid": "-- Grafana --"
                   },
                   "expr": "sum(kube_pod_container_status_waiting{namespace=~\"$namespace\"})",
                   "format": "time_series",
@@ -3615,7 +3615,7 @@ dashboards:
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "eeexzqbtg0f0ge"
+                "uid": "-- Grafana --"
               },
               "fieldConfig": {
                 "defaults": {},
@@ -3634,7 +3634,7 @@ dashboards:
                 {
                   "datasource": {
                     "type": "prometheus",
-                    "uid": "eeexzqbtg0f0ge"
+                    "uid": "-- Grafana --"
                   },
                   "expr": "sum(kube_pod_container_status_terminated{namespace=~\"$namespace\"})",
                   "format": "time_series",
@@ -3648,7 +3648,7 @@ dashboards:
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "eeexzqbtg0f0ge"
+                "uid": "-- Grafana --"
               },
               "fieldConfig": {
                 "defaults": {},
@@ -3667,7 +3667,7 @@ dashboards:
                 {
                   "datasource": {
                     "type": "prometheus",
-                    "uid": "eeexzqbtg0f0ge"
+                    "uid": "-- Grafana --"
                   },
                   "expr": "sum(delta(kube_pod_container_status_restarts{namespace=\"kube-system\"}[30m]))",
                   "format": "time_series",
@@ -3681,7 +3681,7 @@ dashboards:
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "eeexzqbtg0f0ge"
+                "uid": "-- Grafana --"
               },
               "fieldConfig": {
                 "defaults": {},
@@ -3700,7 +3700,7 @@ dashboards:
                 {
                   "datasource": {
                     "type": "prometheus",
-                    "uid": "eeexzqbtg0f0ge"
+                    "uid": "-- Grafana --"
                   },
                   "expr": "sum(kube_pod_container_resource_requests_cpu_cores{namespace=~\"$namespace\", node=~\"$node\"})",
                   "format": "time_series",
@@ -3714,7 +3714,7 @@ dashboards:
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "eeexzqbtg0f0ge"
+                "uid": "-- Grafana --"
               },
               "fieldConfig": {
                 "defaults": {},
@@ -3733,7 +3733,7 @@ dashboards:
                 {
                   "datasource": {
                     "type": "prometheus",
-                    "uid": "eeexzqbtg0f0ge"
+                    "uid": "-- Grafana --"
                   },
                   "expr": "sum(kube_pod_container_resource_requests_memory_bytes{namespace=~\"$namespace\", node=~\"$node\"})",
                   "format": "time_series",
@@ -3760,7 +3760,7 @@ dashboards:
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "eeexzqbtg0f0ge"
+                "uid": "-- Grafana --"
               },
               "fieldConfig": {
                 "defaults": {},
@@ -3779,7 +3779,7 @@ dashboards:
                 {
                   "datasource": {
                     "type": "prometheus",
-                    "uid": "eeexzqbtg0f0ge"
+                    "uid": "-- Grafana --"
                   },
                   "expr": "sum(kube_job_status_succeeded{namespace=~\"$namespace\"})",
                   "format": "time_series",
@@ -3793,7 +3793,7 @@ dashboards:
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "eeexzqbtg0f0ge"
+                "uid": "-- Grafana --"
               },
               "fieldConfig": {
                 "defaults": {},
@@ -3812,7 +3812,7 @@ dashboards:
                 {
                   "datasource": {
                     "type": "prometheus",
-                    "uid": "eeexzqbtg0f0ge"
+                    "uid": "-- Grafana --"
                   },
                   "expr": "sum(kube_job_status_active{namespace=~\"$namespace\"})",
                   "format": "time_series",
@@ -3826,7 +3826,7 @@ dashboards:
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "eeexzqbtg0f0ge"
+                "uid": "-- Grafana --"
               },
               "fieldConfig": {
                 "defaults": {},
@@ -3845,7 +3845,7 @@ dashboards:
                 {
                   "datasource": {
                     "type": "prometheus",
-                    "uid": "eeexzqbtg0f0ge"
+                    "uid": "-- Grafana --"
                   },
                   "expr": "sum(kube_job_status_failed{namespace=~\"$namespace\"})",
                   "format": "time_series",
