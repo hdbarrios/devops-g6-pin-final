@@ -1,0 +1,105 @@
+---
+namespaceOverride: mundose
+
+image:
+  repository: bitnami/nginx
+  tag: 1.27.4-debian-12-r5
+  pullPolicy: IfNotPresent
+
+service:
+  type: LoadBalancer
+  ports:
+    http: 80
+
+serverBlock: |
+  server {
+    listen 0.0.0.0:8080;
+    root /app;
+    location / {
+      index index.html;
+    }
+    location /pinfg6 {
+      alias /app/grupo6.html;
+    }
+  }
+
+extraVolumes:
+  - name: custom-html
+    configMap:
+      name: nginx-html-content
+
+extraVolumeMounts:
+  - name: custom-html
+    mountPath: /app
+
+extraDeploy:
+  - apiVersion: v1
+    kind: ConfigMap
+    metadata:
+      name: nginx-html-content
+      namespace: mundose
+    data:
+      grupo6.html: |
+        <!DOCTYPE html>
+        <html lang="es">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Lista de Integrantes</title>
+            <style>
+                body {
+                    font-family: Arial, sans-serif;
+                    text-align: center;
+                    margin: 20px;
+                }
+                table {
+                    width: 50%;
+                    margin: 0 auto;
+                    border-collapse: collapse;
+                    text-align: left;
+                }
+                th, td {
+                    border: 1px solid #000;
+                    padding: 10px;
+                }
+                th {
+                    background-color: #f2f2f2;
+                }
+                img {
+                    margin-top: 20px;
+                    max-width: 300px;
+                    height: auto;
+                }
+            </style>
+        </head>
+        <body>
+            <h1>edu.mundose.com - Proyecto Integracion Final</h1>
+            <table>
+                <tr>
+                    <th>Integrantes</th>
+                    <th>Email</th>
+                </tr>
+                <tr>
+                    <td>Juan Pablo Heyda</td>
+                    <td>juanpabloh.123@gmail.com</td>
+                </tr>
+                <tr>
+                    <td>Renzo Emiliano Carletti</td>
+                    <td>renzocarletti@hotmail.com / pipito1498@gmail.com</td>
+                </tr>
+                <tr>
+                    <td>Johanna Dominguez</td>
+                    <td>johisd9@hotmail.com</td>
+                </tr>
+                <tr>
+                    <td>Lucas Bufano</td>
+                    <td>lucas.bufano2@gmail.com</td>
+                </tr>
+                <tr>
+                    <td>Hector Barrios</td>
+                    <td>hdbarrios@gmail.com</td>
+                </tr>
+            </table>
+            <img src="https://tf-bucket-imgs.s3.us-east-1.amazonaws.com/img/grupo6.png" alt="Grupo6">
+        </body>
+        </html>
