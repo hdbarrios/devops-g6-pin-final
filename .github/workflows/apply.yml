@@ -100,8 +100,7 @@ jobs:
        
        kubectl -n mundose get pods
        kubectl -n mundose get svc
-       
-       
+
        helm install prometheus prometheus-community/prometheus \
          --namespace prometheus \
          --create-namespace \
