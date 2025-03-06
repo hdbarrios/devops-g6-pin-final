@@ -1876,7 +1876,7 @@ dashboards:
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "PBFA97CFB590B2093"
+                "uid": "-- Grafana --"
               },
               "fieldConfig": {
                 "defaults": {
@@ -1945,7 +1945,7 @@ dashboards:
                 {
                   "datasource": {
                     "type": "prometheus",
-                    "uid": "PBFA97CFB590B2093"
+                    "uid": "-- Grafana --"
                   },
                   "expr": "sum(kube_pod_info{node=~\"$node\"}) / sum(kube_node_status_allocatable_pods{node=~\"$node\"}) * 100",
                   "instant": false,
@@ -1959,7 +1959,7 @@ dashboards:
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "PBFA97CFB590B2093"
+                "uid": "-- Grafana --"
               },
               "fieldConfig": {
                 "defaults": {
@@ -2028,7 +2028,7 @@ dashboards:
                 {
                   "datasource": {
                     "type": "prometheus",
-                    "uid": "PBFA97CFB590B2093"
+                    "uid": "-- Grafana --"
                   },
                   "expr": "sum(rate(container_cpu_usage_seconds_total{namespace=~\"$namespace\"}[1m])) / sum(kube_node_status_allocatable_cpu_cores{node=~\"$node\"}) * 100",
                   "instant": false,
