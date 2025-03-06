@@ -29,43 +29,19 @@ jobs:
         unzip terraform_"$tf_version"_linux_amd64.zip
         sudo mv terraform /usr/local/bin/
            
-    - name: Install kubectl
-      run: |
-        curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
-        sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
-
-    - name: Install Helm
-      run: |
-        curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
-
-    - name: Install AWS CLI
-      run: |
-        curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-        unzip awscliv2.zip
-        sudo ./aws/install --update
-
-    - name: Uninstall
-      run: |
-        kubectl delete ns grafana
-        kubectl delete ns prometheus
-        kubectl delete ns mundose
-
     - name: Verify Terraform version
       run: terraform version
 
     - name: Terraform init
-      working-directory: terraform-pinf
       run: |
         terraform init -input=false
         #terraform init -input=false -backend-config="profile=terraform-admin"
 
     - name: Terraform validation
-      working-directory: terraform-pinf
       run: |
         terraform validate
 
     - name: Terraform destroy
-      working-directory: terraform-pinf
       id: destroy
       run: |
         terraform destroy -var-file=profiles/pinf.tfvars -auto-approve
