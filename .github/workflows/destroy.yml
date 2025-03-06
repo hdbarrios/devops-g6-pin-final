@@ -17,7 +17,6 @@ jobs:
     steps:
     - uses: actions/checkout@v4
       with:
-         #ref: ${{ github.event.pull_request.head.sha }} # se refiere al commit más reciente del branch de origen del PR (es decir, el branch desde el cual se hizo el pull request).
          ref: ${{ github.sha }} # github.sha hace referencia al commit hash del evento actual, que es el commit específico que activó el workflow. En el caso de un push o un pull_request, este es el commit que causó que el workflow se ejecutara.
          submodules: true
          fetch-depth: 1
@@ -35,7 +34,6 @@ jobs:
     - name: Terraform init
       run: |
         terraform init -input=false
-        #terraform init -input=false -backend-config="profile=terraform-admin"
 
     - name: Terraform validation
       run: |
@@ -45,5 +43,4 @@ jobs:
       id: destroy
       run: |
         terraform destroy -var-file=profiles/pinf.tfvars -auto-approve
-        #terraform apply -destroy -var-file=profiles/pinf.tfvars -auto-approve
 
