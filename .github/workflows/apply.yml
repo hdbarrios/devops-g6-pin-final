@@ -122,6 +122,9 @@ jobs:
          --create-namespace \
          --values profiles/grafana-values.yaml
        
+       sleep 10
+
+       kubectl get svc -n mundose
        kubectl get svc -n grafana
        kubectl get svc -n prometheus
-       kubectl get svc -n mundose
+
