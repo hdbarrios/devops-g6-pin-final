@@ -1845,7 +1845,7 @@ dashboards:
           "editable": true,
           "fiscalYearStartMonth": 0,
           "graphTooltip": 1,
-          "id": 8,
+          "id": 2,
           "links": [
             {
               "asDropdown": true,
@@ -2772,7 +2772,9 @@ dashboards:
                               "color": "rgba(50, 172, 45, 0.97)",
                               "value": 0
                             },
-                            {}
+                            {
+                              "value": null
+                            }
                           ]
                         }
                       }
@@ -3521,7 +3523,8 @@ dashboards:
                     "mode": "absolute",
                     "steps": [
                       {
-                        "color": "green"
+                        "color": "green",
+                        "value": null
                       },
                       {
                         "color": "red",
@@ -3586,7 +3589,8 @@ dashboards:
                     "mode": "absolute",
                     "steps": [
                       {
-                        "color": "green"
+                        "color": "green",
+                        "value": null
                       },
                       {
                         "color": "red",
@@ -3651,7 +3655,8 @@ dashboards:
                     "mode": "absolute",
                     "steps": [
                       {
-                        "color": "green"
+                        "color": "green",
+                        "value": null
                       },
                       {
                         "color": "red",
@@ -3729,7 +3734,8 @@ dashboards:
                     "mode": "absolute",
                     "steps": [
                       {
-                        "color": "green"
+                        "color": "green",
+                        "value": null
                       },
                       {
                         "color": "red",
@@ -3793,7 +3799,8 @@ dashboards:
                     "mode": "absolute",
                     "steps": [
                       {
-                        "color": "green"
+                        "color": "green",
+                        "value": null
                       },
                       {
                         "color": "red",
@@ -3857,7 +3864,8 @@ dashboards:
                     "mode": "absolute",
                     "steps": [
                       {
-                        "color": "green"
+                        "color": "green",
+                        "value": null
                       },
                       {
                         "color": "red",
@@ -3921,7 +3929,8 @@ dashboards:
                     "mode": "absolute",
                     "steps": [
                       {
-                        "color": "green"
+                        "color": "green",
+                        "value": null
                       },
                       {
                         "color": "red",
@@ -3985,7 +3994,8 @@ dashboards:
                     "mode": "absolute",
                     "steps": [
                       {
-                        "color": "green"
+                        "color": "green",
+                        "value": null
                       },
                       {
                         "color": "red",
@@ -4049,7 +4059,8 @@ dashboards:
                     "mode": "absolute",
                     "steps": [
                       {
-                        "color": "green"
+                        "color": "green",
+                        "value": null
                       },
                       {
                         "color": "red",
@@ -4126,7 +4137,8 @@ dashboards:
                     "mode": "absolute",
                     "steps": [
                       {
-                        "color": "green"
+                        "color": "green",
+                        "value": null
                       },
                       {
                         "color": "red",
@@ -4190,7 +4202,8 @@ dashboards:
                     "mode": "absolute",
                     "steps": [
                       {
-                        "color": "green"
+                        "color": "green",
+                        "value": null
                       },
                       {
                         "color": "red",
@@ -4254,7 +4267,8 @@ dashboards:
                     "mode": "absolute",
                     "steps": [
                       {
-                        "color": "green"
+                        "color": "green",
+                        "value": null
                       },
                       {
                         "color": "red",
@@ -4358,7 +4372,7 @@ dashboards:
                     "value": ".*"
                   }
                 ],
-                "query": ".*",
+                "query": "grafana",
                 "type": "textbox"
               }
             ]
@@ -4369,9 +4383,9 @@ dashboards:
           },
           "timepicker": {},
           "timezone": "browser",
-          "title": "Kubernetes Cluster (Prometheus)23",
-          "uid": "4XuMd2Iiz23",
-          "version": 1,
+          "title": "Kubernetes Cluster (Prometheus)",
+          "uid": "4XuMd2Iiz",
+          "version": 2,
           "weekStart": ""
         }
 
