@@ -132,6 +132,9 @@ jobs:
        kubectl get svc -n mundose
        kubectl get svc -n grafana
        kubectl get svc -n prometheus
+
+       echo "List PV:"
+       kubectl get pv --all-namespace
      
     - name: Port-forward prometheus-service
       run: |
