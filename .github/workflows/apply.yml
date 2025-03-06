@@ -139,7 +139,7 @@ jobs:
        echo "Puedes acceder a Prometheus en: http://$RUNNER_IP:8080"
 
        # Ejecutar el port-forward en segundo plano
-       kubectl port-forward svc/prometheus-server -n prometheus 8080:9090 --address 0.0.0.0 &
+       kubectl port-forward -n prometheus deploy/prometheus-server 8080:9090 --address 0.0.0.0 &
        PORT_FORWARD_PID=$!  # Capturar el PID del proceso en segundo plano
       
        # Esperar 1 minutos (60 segundos)
