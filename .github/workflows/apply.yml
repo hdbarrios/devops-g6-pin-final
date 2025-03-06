@@ -35,6 +35,28 @@ jobs:
         unzip terraform_"$tf_version"_linux_amd64.zip
         sudo mv terraform /usr/local/bin/
 
+    - name: Verify Terraform version
+      run: terraform version
+
+    - name: Terraform init
+      run: |
+        terraform init -input=false
+
+    - name: Terraform validation
+      run: |
+        terraform validate
+
+    - name: Terraform plan
+      if: github.event_name == 'pull_request' || github.event_name == 'push'
+      run: |
+       terraform plan -var-file=profiles/pinf.tfvars 
+
+    - name: Terraform apply
+      if: github.event_name == 'push'  # Solo en push a master (es decir, cuando el PR se mergea)
+      run: |
+       terraform apply -var-file=profiles/pinf.tfvars -auto-approve -input=false
+
+  Validacion_Infra:
     - name: Install kubectl
       run: |
         curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
@@ -50,36 +72,8 @@ jobs:
         unzip awscliv2.zip
         sudo ./aws/install --update
 
-    - name: Verify Terraform version
-      run: terraform version
-
-    - name: Terraform init
+    - name: Verificando el cluster EKS
       run: |
-        terraform init -input=false
-
-    - name: Terraform validation
-      run: |
-        terraform validate
-
-    - name: Terraform plan
-      if: github.event_name == 'pull_request' || github.event_name == 'push'
-      run: |
-       pwd
-       ls -ltra
-       terraform plan -var-file=profiles/pinf.tfvars 
-
-    - name: Terraform apply
-      if: github.event_name == 'push'  # Solo en push a master (es decir, cuando el PR se mergea)
-      run: |
-       pwd
-       ls -ltra
-        terraform apply -var-file=profiles/pinf.tfvars -auto-approve -input=false
-
-    - name: validation
-      run: |
-       pwd
-       ls -ltra
-       echo "Verificando el cluster EKS..."
        kubectl get nodes -o wide
        
        helm repo add bitnami https://charts.bitnami.com/bitnami
