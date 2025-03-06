@@ -19,7 +19,8 @@ serverBlock: |
       index index.html;
     }
     location /pinfg6 {
-      alias /app/grupo6.html;
+      root /app;
+      try_files /grupo6.html =404;
     }
   }
 
