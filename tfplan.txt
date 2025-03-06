@@ -1,0 +1,2954 @@
+terraform plan -var-file=profiles/pinf.tfvars -out=tfplan
+Acquiring state lock. This may take a few moments...
+module.ebs_csi_driver_irsa.data.aws_partition.current: Reading...
+module.efs_csi_driver_irsa.data.aws_region.current: Reading...
+module.efs_csi_driver_irsa.data.aws_caller_identity.current: Reading...
+module.eks.module.kms.data.aws_partition.current[0]: Reading...
+data.aws_availability_zones.azs: Reading...
+module.ebs_csi_driver_irsa.data.aws_caller_identity.current: Reading...
+module.ebs_csi_driver_irsa.data.aws_partition.current: Read complete after 0s [id=aws]
+module.efs_csi_driver_irsa.data.aws_region.current: Read complete after 0s [id=us-east-1]
+module.eks.module.kms.data.aws_partition.current[0]: Read complete after 0s [id=aws]
+module.eks.data.aws_partition.current[0]: Reading...
+module.eks.data.aws_partition.current[0]: Read complete after 0s [id=aws]
+module.efs_csi_driver_irsa.data.aws_partition.current: Reading...
+module.eks.data.aws_iam_policy_document.assume_role_policy[0]: Reading...
+module.efs_csi_driver_irsa.data.aws_partition.current: Read complete after 0s [id=aws]
+module.eks.data.aws_iam_policy_document.assume_role_policy[0]: Read complete after 0s [id=2830595799]
+module.eks.data.aws_caller_identity.current[0]: Reading...
+module.efs_csi_driver_irsa.data.aws_iam_policy_document.efs_csi[0]: Reading...
+module.ebs_csi_driver_irsa.data.aws_region.current: Reading...
+module.eks.module.kms.data.aws_caller_identity.current[0]: Reading...
+module.ebs_csi_driver_irsa.data.aws_region.current: Read complete after 0s [id=us-east-1]
+module.efs_csi_driver_irsa.data.aws_iam_policy_document.efs_csi[0]: Read complete after 0s [id=3064053908]
+module.ebs_csi_driver_irsa.data.aws_iam_policy_document.ebs_csi[0]: Reading...
+module.eks.data.aws_iam_policy_document.custom[0]: Reading...
+module.eks.data.aws_iam_policy_document.custom[0]: Read complete after 0s [id=513122117]
+module.ebs_csi_driver_irsa.data.aws_iam_policy_document.ebs_csi[0]: Read complete after 0s [id=435063099]
+module.ebs_csi_driver_irsa.data.aws_caller_identity.current: Read complete after 0s [id=536697232168]
+module.efs_csi_driver_irsa.data.aws_caller_identity.current: Read complete after 0s [id=536697232168]
+module.eks.data.aws_caller_identity.current[0]: Read complete after 0s [id=536697232168]
+module.eks.data.aws_iam_session_context.current[0]: Reading...
+module.eks.data.aws_iam_session_context.current[0]: Read complete after 0s [id=arn:aws:iam::536697232168:user/pin-f]
+module.eks.module.kms.data.aws_caller_identity.current[0]: Read complete after 0s [id=536697232168]
+data.aws_availability_zones.azs: Read complete after 0s [id=us-east-1]
+module.eks.module.eks_managed_node_group["main_node_group"].data.aws_caller_identity.current: Reading...
+module.eks.module.eks_managed_node_group["main_node_group"].data.aws_partition.current: Reading...
+module.eks.module.eks_managed_node_group["main_node_group"].data.aws_partition.current: Read complete after 0s [id=aws]
+module.eks.module.eks_managed_node_group["main_node_group"].data.aws_iam_policy_document.assume_role_policy[0]: Reading...
+module.eks.module.eks_managed_node_group["main_node_group"].data.aws_iam_policy_document.assume_role_policy[0]: Read complete after 0s [id=2560088296]
+module.eks.module.eks_managed_node_group["main_node_group"].data.aws_caller_identity.current: Read complete after 1s [id=536697232168]
+
+Terraform used the selected providers to generate the following execution plan. Resource actions are indicated with the following symbols:
+  + create
+ <= read (data resources)
+
+Terraform will perform the following actions:
+
+  # data.aws_security_group.eks_cluster_sg will be read during apply
+  # (depends on a resource or a module with changes pending)
+ <= data "aws_security_group" "eks_cluster_sg" {
+      + arn         = (known after apply)
+      + description = (known after apply)
+      + id          = (known after apply)
+      + name        = (known after apply)
+      + tags        = (known after apply)
+      + vpc_id      = (known after apply)
+
+      + filter {
+          + name   = "tag:Name"
+          + values = [
+              + "mundos-e-cluster",
+            ]
+        }
+    }
+
+  # data.tls_certificate.eks_oidc will be read during apply
+  # (config refers to values not yet known)
+ <= data "tls_certificate" "eks_oidc" {
+      + certificates = (known after apply)
+      + id           = (known after apply)
+      + url          = (known after apply)
+    }
+
+  # aws_eip.nat[0] will be created
+  + resource "aws_eip" "nat" {
+      + allocation_id        = (known after apply)
+      + arn                  = (known after apply)
+      + association_id       = (known after apply)
+      + carrier_ip           = (known after apply)
+      + customer_owned_ip    = (known after apply)
+      + domain               = "vpc"
+      + id                   = (known after apply)
+      + instance             = (known after apply)
+      + ipam_pool_id         = (known after apply)
+      + network_border_group = (known after apply)
+      + network_interface    = (known after apply)
+      + private_dns          = (known after apply)
+      + private_ip           = (known after apply)
+      + ptr_record           = (known after apply)
+      + public_dns           = (known after apply)
+      + public_ip            = (known after apply)
+      + public_ipv4_pool     = (known after apply)
+      + tags                 = {
+          + "Name"        = "nat-eip-1"
+          + "environment" = "PRD"
+          + "equipo"      = "Grupo6"
+          + "proyecto"    = "PINF"
+          + "repositorio" = "git@github.com:hdbarrios/devops-g6-pin-final.git"
+        }
+      + tags_all             = {
+          + "Name"        = "nat-eip-1"
+          + "environment" = "PRD"
+          + "equipo"      = "Grupo6"
+          + "proyecto"    = "PINF"
+          + "repositorio" = "git@github.com:hdbarrios/devops-g6-pin-final.git"
+        }
+      + vpc                  = (known after apply)
+    }
+
+  # aws_eip.nat[1] will be created
+  + resource "aws_eip" "nat" {
+      + allocation_id        = (known after apply)
+      + arn                  = (known after apply)
+      + association_id       = (known after apply)
+      + carrier_ip           = (known after apply)
+      + customer_owned_ip    = (known after apply)
+      + domain               = "vpc"
+      + id                   = (known after apply)
+      + instance             = (known after apply)
+      + ipam_pool_id         = (known after apply)
+      + network_border_group = (known after apply)
+      + network_interface    = (known after apply)
+      + private_dns          = (known after apply)
+      + private_ip           = (known after apply)
+      + ptr_record           = (known after apply)
+      + public_dns           = (known after apply)
+      + public_ip            = (known after apply)
+      + public_ipv4_pool     = (known after apply)
+      + tags                 = {
+          + "Name"        = "nat-eip-2"
+          + "environment" = "PRD"
+          + "equipo"      = "Grupo6"
+          + "proyecto"    = "PINF"
+          + "repositorio" = "git@github.com:hdbarrios/devops-g6-pin-final.git"
+        }
+      + tags_all             = {
+          + "Name"        = "nat-eip-2"
+          + "environment" = "PRD"
+          + "equipo"      = "Grupo6"
+          + "proyecto"    = "PINF"
+          + "repositorio" = "git@github.com:hdbarrios/devops-g6-pin-final.git"
+        }
+      + vpc                  = (known after apply)
+    }
+
+  # aws_eip.nat[2] will be created
+  + resource "aws_eip" "nat" {
+      + allocation_id        = (known after apply)
+      + arn                  = (known after apply)
+      + association_id       = (known after apply)
+      + carrier_ip           = (known after apply)
+      + customer_owned_ip    = (known after apply)
+      + domain               = "vpc"
+      + id                   = (known after apply)
+      + instance             = (known after apply)
+      + ipam_pool_id         = (known after apply)
+      + network_border_group = (known after apply)
+      + network_interface    = (known after apply)
+      + private_dns          = (known after apply)
+      + private_ip           = (known after apply)
+      + ptr_record           = (known after apply)
+      + public_dns           = (known after apply)
+      + public_ip            = (known after apply)
+      + public_ipv4_pool     = (known after apply)
+      + tags                 = {
+          + "Name"        = "nat-eip-3"
+          + "environment" = "PRD"
+          + "equipo"      = "Grupo6"
+          + "proyecto"    = "PINF"
+          + "repositorio" = "git@github.com:hdbarrios/devops-g6-pin-final.git"
+        }
+      + tags_all             = {
+          + "Name"        = "nat-eip-3"
+          + "environment" = "PRD"
+          + "equipo"      = "Grupo6"
+          + "proyecto"    = "PINF"
+          + "repositorio" = "git@github.com:hdbarrios/devops-g6-pin-final.git"
+        }
+      + vpc                  = (known after apply)
+    }
+
+  # aws_iam_access_key.programmatic_user_key will be created
+  + resource "aws_iam_access_key" "programmatic_user_key" {
+      + create_date                    = (known after apply)
+      + encrypted_secret               = (known after apply)
+      + encrypted_ses_smtp_password_v4 = (known after apply)
+      + id                             = (known after apply)
+      + key_fingerprint                = (known after apply)
+      + secret                         = (sensitive value)
+      + ses_smtp_password_v4           = (sensitive value)
+      + status                         = "Active"
+      + user                           = "ec2_admin_role_cicd"
+    }
+
+  # aws_iam_instance_profile.ec2_admin_profile will be created
+  + resource "aws_iam_instance_profile" "ec2_admin_profile" {
+      + arn         = (known after apply)
+      + create_date = (known after apply)
+      + id          = (known after apply)
+      + name        = "ec2_admin_profile"
+      + name_prefix = (known after apply)
+      + path        = "/"
+      + role        = "ec2_admin_role_cicd"
+      + tags        = {
+          + "Name"        = "ec2_admin_profile"
+          + "environment" = "PRD"
+          + "equipo"      = "Grupo6"
+          + "proyecto"    = "PINF"
+          + "repositorio" = "git@github.com:hdbarrios/devops-g6-pin-final.git"
+        }
+      + tags_all    = {
+          + "Name"        = "ec2_admin_profile"
+          + "environment" = "PRD"
+          + "equipo"      = "Grupo6"
+          + "proyecto"    = "PINF"
+          + "repositorio" = "git@github.com:hdbarrios/devops-g6-pin-final.git"
+        }
+      + unique_id   = (known after apply)
+    }
+
+  # aws_iam_policy.ebs_management_policy will be created
+  + resource "aws_iam_policy" "ebs_management_policy" {
+      + arn              = (known after apply)
+      + attachment_count = (known after apply)
+      + description      = "Policy for EBS volume management"
+      + id               = (known after apply)
+      + name             = "ebs-management-policy"
+      + name_prefix      = (known after apply)
+      + path             = "/"
+      + policy           = jsonencode(
+            {
+              + Statement = [
+                  + {
+                      + Action   = [
+                          + "ec2:AttachVolume",
+                          + "ec2:DetachVolume",
+                          + "ec2:CreateVolume",
+                          + "ec2:DeleteVolume",
+                          + "ec2:DescribeVolumes",
+                          + "ec2:DescribeVolumeStatus",
+                          + "ec2:DescribeVolumeAttribute",
+                          + "ec2:ModifyVolume",
+                          + "ec2:DescribeSnapshots",
+                          + "ec2:CreateSnapshot",
+                          + "ec2:DeleteSnapshot",
+                        ]
+                      + Effect   = "Allow"
+                      + Resource = "*"
+                    },
+                ]
+              + Version   = "2012-10-17"
+            }
+        )
+      + policy_id        = (known after apply)
+      + tags             = {
+          + "Name"        = "ebs-management-policy"
+          + "environment" = "PRD"
+          + "equipo"      = "Grupo6"
+          + "proyecto"    = "PINF"
+          + "repositorio" = "git@github.com:hdbarrios/devops-g6-pin-final.git"
+        }
+      + tags_all         = {
+          + "Name"        = "ebs-management-policy"
+          + "environment" = "PRD"
+          + "equipo"      = "Grupo6"
+          + "proyecto"    = "PINF"
+          + "repositorio" = "git@github.com:hdbarrios/devops-g6-pin-final.git"
+        }
+    }
+
+  # aws_iam_role.ebs_csi_driver_role will be created
+  + resource "aws_iam_role" "ebs_csi_driver_role" {
+      + arn                   = (known after apply)
+      + assume_role_policy    = (known after apply)
+      + create_date           = (known after apply)
+      + force_detach_policies = false
+      + id                    = (known after apply)
+      + managed_policy_arns   = (known after apply)
+      + max_session_duration  = 3600
+      + name                  = "AmazonEKS_EBS_CSI_DriverRole"
+      + name_prefix           = (known after apply)
+      + path                  = "/"
+      + tags                  = {
+          + "Name"        = "AmazonEKS_EBS_CSI_DriverRole"
+          + "environment" = "PRD"
+          + "equipo"      = "Grupo6"
+          + "proyecto"    = "PINF"
+          + "repositorio" = "git@github.com:hdbarrios/devops-g6-pin-final.git"
+        }
+      + tags_all              = {
+          + "Name"        = "AmazonEKS_EBS_CSI_DriverRole"
+          + "environment" = "PRD"
+          + "equipo"      = "Grupo6"
+          + "proyecto"    = "PINF"
+          + "repositorio" = "git@github.com:hdbarrios/devops-g6-pin-final.git"
+        }
+      + unique_id             = (known after apply)
+
+      + inline_policy (known after apply)
+    }
+
+  # aws_iam_role.ec2_admin_role will be created
+  + resource "aws_iam_role" "ec2_admin_role" {
+      + arn                   = (known after apply)
+      + assume_role_policy    = jsonencode(
+            {
+              + Statement = [
+                  + {
+                      + Action    = "sts:AssumeRole"
+                      + Effect    = "Allow"
+                      + Principal = {
+                          + Service = "ec2.amazonaws.com"
+                        }
+                    },
+                ]
+              + Version   = "2012-10-17"
+            }
+        )
+      + create_date           = (known after apply)
+      + force_detach_policies = false
+      + id                    = (known after apply)
+      + managed_policy_arns   = (known after apply)
+      + max_session_duration  = 3600
+      + name                  = "ec2_admin_role_cicd"
+      + name_prefix           = (known after apply)
+      + path                  = "/"
+      + tags                  = {
+          + "Name"        = "ec2_admin_role_cicd"
+          + "environment" = "PRD"
+          + "equipo"      = "Grupo6"
+          + "proyecto"    = "PINF"
+          + "repositorio" = "git@github.com:hdbarrios/devops-g6-pin-final.git"
+        }
+      + tags_all              = {
+          + "Name"        = "ec2_admin_role_cicd"
+          + "environment" = "PRD"
+          + "equipo"      = "Grupo6"
+          + "proyecto"    = "PINF"
+          + "repositorio" = "git@github.com:hdbarrios/devops-g6-pin-final.git"
+        }
+      + unique_id             = (known after apply)
+
+      + inline_policy (known after apply)
+    }
+
+  # aws_iam_role_policy_attachment.ebs_csi_driver_policy will be created
+  + resource "aws_iam_role_policy_attachment" "ebs_csi_driver_policy" {
+      + id         = (known after apply)
+      + policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy"
+      + role       = "AmazonEKS_EBS_CSI_DriverRole"
+    }
+
+  # aws_iam_role_policy_attachment.ec2_admin_policy_attachment will be created
+  + resource "aws_iam_role_policy_attachment" "ec2_admin_policy_attachment" {
+      + id         = (known after apply)
+      + policy_arn = "arn:aws:iam::aws:policy/AdministratorAccess"
+      + role       = "ec2_admin_role_cicd"
+    }
+
+  # aws_iam_user.programmatic_user will be created
+  + resource "aws_iam_user" "programmatic_user" {
+      + arn           = (known after apply)
+      + force_destroy = false
+      + id            = (known after apply)
+      + name          = "ec2_admin_role_cicd"
+      + path          = "/"
+      + tags          = {
+          + "Name"        = "ec2_admin_role_cicd"
+          + "environment" = "PRD"
+          + "equipo"      = "Grupo6"
+          + "proyecto"    = "PINF"
+          + "repositorio" = "git@github.com:hdbarrios/devops-g6-pin-final.git"
+        }
+      + tags_all      = {
+          + "Name"        = "ec2_admin_role_cicd"
+          + "environment" = "PRD"
+          + "equipo"      = "Grupo6"
+          + "proyecto"    = "PINF"
+          + "repositorio" = "git@github.com:hdbarrios/devops-g6-pin-final.git"
+        }
+      + unique_id     = (known after apply)
+    }
+
+  # aws_iam_user_policy_attachment.programmatic_user_admin_policy will be created
+  + resource "aws_iam_user_policy_attachment" "programmatic_user_admin_policy" {
+      + id         = (known after apply)
+      + policy_arn = "arn:aws:iam::aws:policy/AdministratorAccess"
+      + user       = "ec2_admin_role_cicd"
+    }
+
+  # aws_iam_user_policy_attachment.programmatic_user_eks_cluster_policy will be created
+  + resource "aws_iam_user_policy_attachment" "programmatic_user_eks_cluster_policy" {
+      + id         = (known after apply)
+      + policy_arn = "arn:aws:iam::aws:policy/AmazonEKSClusterPolicy"
+      + user       = "ec2_admin_role_cicd"
+    }
+
+  # aws_iam_user_policy_attachment.programmatic_user_eks_worker_node_policy will be created
+  + resource "aws_iam_user_policy_attachment" "programmatic_user_eks_worker_node_policy" {
+      + id         = (known after apply)
+      + policy_arn = "arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy"
+      + user       = "ec2_admin_role_cicd"
+    }
+
+  # aws_instance.admin_server will be created
+  + resource "aws_instance" "admin_server" {
+      + ami                                  = "ami-0e2c8caa4b6378d8c"
+      + arn                                  = (known after apply)
+      + associate_public_ip_address          = (known after apply)
+      + availability_zone                    = (known after apply)
+      + cpu_core_count                       = (known after apply)
+      + cpu_threads_per_core                 = (known after apply)
+      + disable_api_stop                     = (known after apply)
+      + disable_api_termination              = (known after apply)
+      + ebs_optimized                        = (known after apply)
+      + enable_primary_ipv6                  = (known after apply)
+      + get_password_data                    = false
+      + host_id                              = (known after apply)
+      + host_resource_group_arn              = (known after apply)
+      + iam_instance_profile                 = "ec2_admin_profile"
+      + id                                   = (known after apply)
+      + instance_initiated_shutdown_behavior = (known after apply)
+      + instance_lifecycle                   = (known after apply)
+      + instance_state                       = (known after apply)
+      + instance_type                        = "t2.micro"
+      + ipv6_address_count                   = (known after apply)
+      + ipv6_addresses                       = (known after apply)
+      + key_name                             = "pin"
+      + monitoring                           = (known after apply)
+      + outpost_arn                          = (known after apply)
+      + password_data                        = (known after apply)
+      + placement_group                      = (known after apply)
+      + placement_partition_number           = (known after apply)
+      + primary_network_interface_id         = (known after apply)
+      + private_dns                          = (known after apply)
+      + private_ip                           = (known after apply)
+      + public_dns                           = (known after apply)
+      + public_ip                            = (known after apply)
+      + secondary_private_ips                = (known after apply)
+      + security_groups                      = (known after apply)
+      + source_dest_check                    = true
+      + spot_instance_request_id             = (known after apply)
+      + subnet_id                            = (known after apply)
+      + tags                                 = {
+          + "Name"        = "pinf"
+          + "environment" = "PRD"
+          + "equipo"      = "Grupo6"
+          + "proyecto"    = "PINF"
+          + "repositorio" = "git@github.com:hdbarrios/devops-g6-pin-final.git"
+        }
+      + tags_all                             = {
+          + "Name"        = "pinf"
+          + "environment" = "PRD"
+          + "equipo"      = "Grupo6"
+          + "proyecto"    = "PINF"
+          + "repositorio" = "git@github.com:hdbarrios/devops-g6-pin-final.git"
+        }
+      + tenancy                              = (known after apply)
+      + user_data                            = (sensitive value)
+      + user_data_base64                     = (known after apply)
+      + user_data_replace_on_change          = false
+      + vpc_security_group_ids               = (known after apply)
+
+      + capacity_reservation_specification (known after apply)
+
+      + cpu_options (known after apply)
+
+      + ebs_block_device (known after apply)
+
+      + enclave_options (known after apply)
+
+      + ephemeral_block_device (known after apply)
+
+      + instance_market_options (known after apply)
+
+      + maintenance_options (known after apply)
+
+      + metadata_options (known after apply)
+
+      + network_interface (known after apply)
+
+      + private_dns_name_options (known after apply)
+
+      + root_block_device {
+          + delete_on_termination = true
+          + device_name           = (known after apply)
+          + encrypted             = false
+          + iops                  = (known after apply)
+          + kms_key_id            = (known after apply)
+          + tags_all              = (known after apply)
+          + throughput            = (known after apply)
+          + volume_id             = (known after apply)
+          + volume_size           = 40
+          + volume_type           = "gp2"
+        }
+    }
+
+  # aws_internet_gateway.igw will be created
+  + resource "aws_internet_gateway" "igw" {
+      + arn      = (known after apply)
+      + id       = (known after apply)
+      + owner_id = (known after apply)
+      + tags     = {
+          + "Name"        = "main-igw"
+          + "environment" = "PRD"
+          + "equipo"      = "Grupo6"
+          + "proyecto"    = "PINF"
+          + "repositorio" = "git@github.com:hdbarrios/devops-g6-pin-final.git"
+        }
+      + tags_all = {
+          + "Name"        = "main-igw"
+          + "environment" = "PRD"
+          + "equipo"      = "Grupo6"
+          + "proyecto"    = "PINF"
+          + "repositorio" = "git@github.com:hdbarrios/devops-g6-pin-final.git"
+        }
+      + vpc_id   = (known after apply)
+    }
+
+  # aws_key_pair.ssh_key will be created
+  + resource "aws_key_pair" "ssh_key" {
+      + arn             = (known after apply)
+      + fingerprint     = (known after apply)
+      + id              = (known after apply)
+      + key_name        = "pin"
+      + key_name_prefix = (known after apply)
+      + key_pair_id     = (known after apply)
+      + key_type        = (known after apply)
+      + public_key      = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCkf5wBCxIS1Rt18hkWUiY8dO79zIfygSj+hizDmWCAq6QZWs3rb8K2MrUCY+S7lIZG/0d3d7oLVxZDW9jYabpf1S5T3tdB2sGJpkLbM6eVcVdVq6zOvFcV7FUBYhLeTnFgib2Ox8/DJ1rZlcZwomGZr8LwG9r3fb89achUhOudy9sWephCo8jRCP/T1LmGWZNP52qCMwR1oVajDsGDmP1MRGrtlazo4DQw7GxhP+CSYmSbRoRpGPNJFzB4OHlcZqKZ8wfUxJ515eDT9xPi9uiVldfofuXxPRuG4rFtOUymO8IFrtvxOTbqwM6kSZimdK/9yp7J8N5N0T+jQQ1901DF"
+      + tags            = {
+          + "Name"        = "eks-ssh-key"
+          + "environment" = "PRD"
+          + "equipo"      = "Grupo6"
+          + "proyecto"    = "PINF"
+          + "repositorio" = "git@github.com:hdbarrios/devops-g6-pin-final.git"
+        }
+      + tags_all        = {
+          + "Name"        = "eks-ssh-key"
+          + "environment" = "PRD"
+          + "equipo"      = "Grupo6"
+          + "proyecto"    = "PINF"
+          + "repositorio" = "git@github.com:hdbarrios/devops-g6-pin-final.git"
+        }
+    }
+
+  # aws_nat_gateway.nat_gw[0] will be created
+  + resource "aws_nat_gateway" "nat_gw" {
+      + allocation_id                      = (known after apply)
+      + association_id                     = (known after apply)
+      + connectivity_type                  = "public"
+      + id                                 = (known after apply)
+      + network_interface_id               = (known after apply)
+      + private_ip                         = (known after apply)
+      + public_ip                          = (known after apply)
+      + secondary_private_ip_address_count = (known after apply)
+      + secondary_private_ip_addresses     = (known after apply)
+      + subnet_id                          = (known after apply)
+      + tags                               = {
+          + "Name"        = "nat-gw-1"
+          + "environment" = "PRD"
+          + "equipo"      = "Grupo6"
+          + "proyecto"    = "PINF"
+          + "repositorio" = "git@github.com:hdbarrios/devops-g6-pin-final.git"
+        }
+      + tags_all                           = {
+          + "Name"        = "nat-gw-1"
+          + "environment" = "PRD"
+          + "equipo"      = "Grupo6"
+          + "proyecto"    = "PINF"
+          + "repositorio" = "git@github.com:hdbarrios/devops-g6-pin-final.git"
+        }
+    }
+
+  # aws_nat_gateway.nat_gw[1] will be created
+  + resource "aws_nat_gateway" "nat_gw" {
+      + allocation_id                      = (known after apply)
+      + association_id                     = (known after apply)
+      + connectivity_type                  = "public"
+      + id                                 = (known after apply)
+      + network_interface_id               = (known after apply)
+      + private_ip                         = (known after apply)
+      + public_ip                          = (known after apply)
+      + secondary_private_ip_address_count = (known after apply)
+      + secondary_private_ip_addresses     = (known after apply)
+      + subnet_id                          = (known after apply)
+      + tags                               = {
+          + "Name"        = "nat-gw-2"
+          + "environment" = "PRD"
+          + "equipo"      = "Grupo6"
+          + "proyecto"    = "PINF"
+          + "repositorio" = "git@github.com:hdbarrios/devops-g6-pin-final.git"
+        }
+      + tags_all                           = {
+          + "Name"        = "nat-gw-2"
+          + "environment" = "PRD"
+          + "equipo"      = "Grupo6"
+          + "proyecto"    = "PINF"
+          + "repositorio" = "git@github.com:hdbarrios/devops-g6-pin-final.git"
+        }
+    }
+
+  # aws_nat_gateway.nat_gw[2] will be created
+  + resource "aws_nat_gateway" "nat_gw" {
+      + allocation_id                      = (known after apply)
+      + association_id                     = (known after apply)
+      + connectivity_type                  = "public"
+      + id                                 = (known after apply)
+      + network_interface_id               = (known after apply)
+      + private_ip                         = (known after apply)
+      + public_ip                          = (known after apply)
+      + secondary_private_ip_address_count = (known after apply)
+      + secondary_private_ip_addresses     = (known after apply)
+      + subnet_id                          = (known after apply)
+      + tags                               = {
+          + "Name"        = "nat-gw-3"
+          + "environment" = "PRD"
+          + "equipo"      = "Grupo6"
+          + "proyecto"    = "PINF"
+          + "repositorio" = "git@github.com:hdbarrios/devops-g6-pin-final.git"
+        }
+      + tags_all                           = {
+          + "Name"        = "nat-gw-3"
+          + "environment" = "PRD"
+          + "equipo"      = "Grupo6"
+          + "proyecto"    = "PINF"
+          + "repositorio" = "git@github.com:hdbarrios/devops-g6-pin-final.git"
+        }
+    }
+
+  # aws_route_table.private_route_table[0] will be created
+  + resource "aws_route_table" "private_route_table" {
+      + arn              = (known after apply)
+      + id               = (known after apply)
+      + owner_id         = (known after apply)
+      + propagating_vgws = (known after apply)
+      + route            = [
+          + {
+              + cidr_block                 = "0.0.0.0/0"
+              + nat_gateway_id             = (known after apply)
+                # (11 unchanged attributes hidden)
+            },
+        ]
+      + tags             = {
+          + "Name"        = "private-route-table-1"
+          + "environment" = "PRD"
+          + "equipo"      = "Grupo6"
+          + "proyecto"    = "PINF"
+          + "repositorio" = "git@github.com:hdbarrios/devops-g6-pin-final.git"
+        }
+      + tags_all         = {
+          + "Name"        = "private-route-table-1"
+          + "environment" = "PRD"
+          + "equipo"      = "Grupo6"
+          + "proyecto"    = "PINF"
+          + "repositorio" = "git@github.com:hdbarrios/devops-g6-pin-final.git"
+        }
+      + vpc_id           = (known after apply)
+    }
+
+  # aws_route_table.private_route_table[1] will be created
+  + resource "aws_route_table" "private_route_table" {
+      + arn              = (known after apply)
+      + id               = (known after apply)
+      + owner_id         = (known after apply)
+      + propagating_vgws = (known after apply)
+      + route            = [
+          + {
+              + cidr_block                 = "0.0.0.0/0"
+              + nat_gateway_id             = (known after apply)
+                # (11 unchanged attributes hidden)
+            },
+        ]
+      + tags             = {
+          + "Name"        = "private-route-table-2"
+          + "environment" = "PRD"
+          + "equipo"      = "Grupo6"
+          + "proyecto"    = "PINF"
+          + "repositorio" = "git@github.com:hdbarrios/devops-g6-pin-final.git"
+        }
+      + tags_all         = {
+          + "Name"        = "private-route-table-2"
+          + "environment" = "PRD"
+          + "equipo"      = "Grupo6"
+          + "proyecto"    = "PINF"
+          + "repositorio" = "git@github.com:hdbarrios/devops-g6-pin-final.git"
+        }
+      + vpc_id           = (known after apply)
+    }
+
+  # aws_route_table.private_route_table[2] will be created
+  + resource "aws_route_table" "private_route_table" {
+      + arn              = (known after apply)
+      + id               = (known after apply)
+      + owner_id         = (known after apply)
+      + propagating_vgws = (known after apply)
+      + route            = [
+          + {
+              + cidr_block                 = "0.0.0.0/0"
+              + nat_gateway_id             = (known after apply)
+                # (11 unchanged attributes hidden)
+            },
+        ]
+      + tags             = {
+          + "Name"        = "private-route-table-3"
+          + "environment" = "PRD"
+          + "equipo"      = "Grupo6"
+          + "proyecto"    = "PINF"
+          + "repositorio" = "git@github.com:hdbarrios/devops-g6-pin-final.git"
+        }
+      + tags_all         = {
+          + "Name"        = "private-route-table-3"
+          + "environment" = "PRD"
+          + "equipo"      = "Grupo6"
+          + "proyecto"    = "PINF"
+          + "repositorio" = "git@github.com:hdbarrios/devops-g6-pin-final.git"
+        }
+      + vpc_id           = (known after apply)
+    }
+
+  # aws_route_table.public_route_table will be created
+  + resource "aws_route_table" "public_route_table" {
+      + arn              = (known after apply)
+      + id               = (known after apply)
+      + owner_id         = (known after apply)
+      + propagating_vgws = (known after apply)
+      + route            = [
+          + {
+              + cidr_block                 = "0.0.0.0/0"
+              + gateway_id                 = (known after apply)
+                # (11 unchanged attributes hidden)
+            },
+        ]
+      + tags             = {
+          + "Name"        = "public-route-table"
+          + "environment" = "PRD"
+          + "equipo"      = "Grupo6"
+          + "proyecto"    = "PINF"
+          + "repositorio" = "git@github.com:hdbarrios/devops-g6-pin-final.git"
+        }
+      + tags_all         = {
+          + "Name"        = "public-route-table"
+          + "environment" = "PRD"
+          + "equipo"      = "Grupo6"
+          + "proyecto"    = "PINF"
+          + "repositorio" = "git@github.com:hdbarrios/devops-g6-pin-final.git"
+        }
+      + vpc_id           = (known after apply)
+    }
+
+  # aws_route_table_association.private_rta[0] will be created
+  + resource "aws_route_table_association" "private_rta" {
+      + id             = (known after apply)
+      + route_table_id = (known after apply)
+      + subnet_id      = (known after apply)
+    }
+
+  # aws_route_table_association.private_rta[1] will be created
+  + resource "aws_route_table_association" "private_rta" {
+      + id             = (known after apply)
+      + route_table_id = (known after apply)
+      + subnet_id      = (known after apply)
+    }
+
+  # aws_route_table_association.private_rta[2] will be created
+  + resource "aws_route_table_association" "private_rta" {
+      + id             = (known after apply)
+      + route_table_id = (known after apply)
+      + subnet_id      = (known after apply)
+    }
+
+  # aws_route_table_association.public_rta[0] will be created
+  + resource "aws_route_table_association" "public_rta" {
+      + id             = (known after apply)
+      + route_table_id = (known after apply)
+      + subnet_id      = (known after apply)
+    }
+
+  # aws_route_table_association.public_rta[1] will be created
+  + resource "aws_route_table_association" "public_rta" {
+      + id             = (known after apply)
+      + route_table_id = (known after apply)
+      + subnet_id      = (known after apply)
+    }
+
+  # aws_route_table_association.public_rta[2] will be created
+  + resource "aws_route_table_association" "public_rta" {
+      + id             = (known after apply)
+      + route_table_id = (known after apply)
+      + subnet_id      = (known after apply)
+    }
+
+  # aws_security_group.sg will be created
+  + resource "aws_security_group" "sg" {
+      + arn                    = (known after apply)
+      + description            = "Security group for EC2 admin and EKS nodes"
+      + egress                 = [
+          + {
+              + cidr_blocks      = [
+                  + "0.0.0.0/0",
+                ]
+              + from_port        = 0
+              + ipv6_cidr_blocks = []
+              + prefix_list_ids  = []
+              + protocol         = "-1"
+              + security_groups  = []
+              + self             = false
+              + to_port          = 0
+                # (1 unchanged attribute hidden)
+            },
+        ]
+      + id                     = (known after apply)
+      + ingress                = [
+          + {
+              + cidr_blocks      = [
+                  + "0.0.0.0/0",
+                  + "10.11.1.0/24",
+                ]
+              + description      = "SSH access"
+              + from_port        = 22
+              + ipv6_cidr_blocks = []
+              + prefix_list_ids  = []
+              + protocol         = "tcp"
+              + security_groups  = []
+              + self             = false
+              + to_port          = 22
+            },
+          + {
+              + cidr_blocks      = [
+                  + "0.0.0.0/0",
+                  + "10.11.1.0/24",
+                ]
+              + description      = "port-forward prometheus"
+              + from_port        = 8080
+              + ipv6_cidr_blocks = []
+              + prefix_list_ids  = []
+              + protocol         = "tcp"
+              + security_groups  = []
+              + self             = false
+              + to_port          = 8080
+            },
+          + {
+              + cidr_blocks      = [
+                  + "10.11.0.0/16",
+                ]
+              + description      = "All internal traffic"
+              + from_port        = 0
+              + ipv6_cidr_blocks = []
+              + prefix_list_ids  = []
+              + protocol         = "-1"
+              + security_groups  = []
+              + self             = false
+              + to_port          = 0
+            },
+        ]
+      + name                   = "eks-ec2-security-group"
+      + name_prefix            = (known after apply)
+      + owner_id               = (known after apply)
+      + revoke_rules_on_delete = false
+      + tags                   = {
+          + "Name"        = "eks-ec2-security-group"
+          + "environment" = "PRD"
+          + "equipo"      = "Grupo6"
+          + "proyecto"    = "PINF"
+          + "repositorio" = "git@github.com:hdbarrios/devops-g6-pin-final.git"
+        }
+      + tags_all               = {
+          + "Name"        = "eks-ec2-security-group"
+          + "environment" = "PRD"
+          + "equipo"      = "Grupo6"
+          + "proyecto"    = "PINF"
+          + "repositorio" = "git@github.com:hdbarrios/devops-g6-pin-final.git"
+        }
+      + vpc_id                 = (known after apply)
+    }
+
+  # aws_security_group_rule.eks_allow_ec2_traffic will be created
+  + resource "aws_security_group_rule" "eks_allow_ec2_traffic" {
+      + from_port                = 0
+      + id                       = (known after apply)
+      + protocol                 = "-1"
+      + security_group_id        = (known after apply)
+      + security_group_rule_id   = (known after apply)
+      + self                     = false
+      + source_security_group_id = (known after apply)
+      + to_port                  = 0
+      + type                     = "ingress"
+    }
+
+  # aws_subnet.private_subnets[0] will be created
+  + resource "aws_subnet" "private_subnets" {
+      + arn                                            = (known after apply)
+      + assign_ipv6_address_on_creation                = false
+      + availability_zone                              = "us-east-1a"
+      + availability_zone_id                           = (known after apply)
+      + cidr_block                                     = "10.11.10.0/24"
+      + enable_dns64                                   = false
+      + enable_resource_name_dns_a_record_on_launch    = false
+      + enable_resource_name_dns_aaaa_record_on_launch = false
+      + id                                             = (known after apply)
+      + ipv6_cidr_block_association_id                 = (known after apply)
+      + ipv6_native                                    = false
+      + map_public_ip_on_launch                        = false
+      + owner_id                                       = (known after apply)
+      + private_dns_hostname_type_on_launch            = (known after apply)
+      + tags                                           = {
+          + "Name"                            = "private-subnet-1"
+          + "environment"                     = "PRD"
+          + "equipo"                          = "Grupo6"
+          + "kubernetes.io/role/internal-elb" = "1"
+          + "proyecto"                        = "PINF"
+          + "repositorio"                     = "git@github.com:hdbarrios/devops-g6-pin-final.git"
+        }
+      + tags_all                                       = {
+          + "Name"                            = "private-subnet-1"
+          + "environment"                     = "PRD"
+          + "equipo"                          = "Grupo6"
+          + "kubernetes.io/role/internal-elb" = "1"
+          + "proyecto"                        = "PINF"
+          + "repositorio"                     = "git@github.com:hdbarrios/devops-g6-pin-final.git"
+        }
+      + vpc_id                                         = (known after apply)
+    }
+
+  # aws_subnet.private_subnets[1] will be created
+  + resource "aws_subnet" "private_subnets" {
+      + arn                                            = (known after apply)
+      + assign_ipv6_address_on_creation                = false
+      + availability_zone                              = "us-east-1b"
+      + availability_zone_id                           = (known after apply)
+      + cidr_block                                     = "10.11.20.0/24"
+      + enable_dns64                                   = false
+      + enable_resource_name_dns_a_record_on_launch    = false
+      + enable_resource_name_dns_aaaa_record_on_launch = false
+      + id                                             = (known after apply)
+      + ipv6_cidr_block_association_id                 = (known after apply)
+      + ipv6_native                                    = false
+      + map_public_ip_on_launch                        = false
+      + owner_id                                       = (known after apply)
+      + private_dns_hostname_type_on_launch            = (known after apply)
+      + tags                                           = {
+          + "Name"                            = "private-subnet-2"
+          + "environment"                     = "PRD"
+          + "equipo"                          = "Grupo6"
+          + "kubernetes.io/role/internal-elb" = "1"
+          + "proyecto"                        = "PINF"
+          + "repositorio"                     = "git@github.com:hdbarrios/devops-g6-pin-final.git"
+        }
+      + tags_all                                       = {
+          + "Name"                            = "private-subnet-2"
+          + "environment"                     = "PRD"
+          + "equipo"                          = "Grupo6"
+          + "kubernetes.io/role/internal-elb" = "1"
+          + "proyecto"                        = "PINF"
+          + "repositorio"                     = "git@github.com:hdbarrios/devops-g6-pin-final.git"
+        }
+      + vpc_id                                         = (known after apply)
+    }
+
+  # aws_subnet.private_subnets[2] will be created
+  + resource "aws_subnet" "private_subnets" {
+      + arn                                            = (known after apply)
+      + assign_ipv6_address_on_creation                = false
+      + availability_zone                              = "us-east-1c"
+      + availability_zone_id                           = (known after apply)
+      + cidr_block                                     = "10.11.50.0/24"
+      + enable_dns64                                   = false
+      + enable_resource_name_dns_a_record_on_launch    = false
+      + enable_resource_name_dns_aaaa_record_on_launch = false
+      + id                                             = (known after apply)
+      + ipv6_cidr_block_association_id                 = (known after apply)
+      + ipv6_native                                    = false
+      + map_public_ip_on_launch                        = false
+      + owner_id                                       = (known after apply)
+      + private_dns_hostname_type_on_launch            = (known after apply)
+      + tags                                           = {
+          + "Name"                            = "private-subnet-3"
+          + "environment"                     = "PRD"
+          + "equipo"                          = "Grupo6"
+          + "kubernetes.io/role/internal-elb" = "1"
+          + "proyecto"                        = "PINF"
+          + "repositorio"                     = "git@github.com:hdbarrios/devops-g6-pin-final.git"
+        }
+      + tags_all                                       = {
+          + "Name"                            = "private-subnet-3"
+          + "environment"                     = "PRD"
+          + "equipo"                          = "Grupo6"
+          + "kubernetes.io/role/internal-elb" = "1"
+          + "proyecto"                        = "PINF"
+          + "repositorio"                     = "git@github.com:hdbarrios/devops-g6-pin-final.git"
+        }
+      + vpc_id                                         = (known after apply)
+    }
+
+  # aws_subnet.public_subnets[0] will be created
+  + resource "aws_subnet" "public_subnets" {
+      + arn                                            = (known after apply)
+      + assign_ipv6_address_on_creation                = false
+      + availability_zone                              = "us-east-1a"
+      + availability_zone_id                           = (known after apply)
+      + cidr_block                                     = "10.11.1.0/24"
+      + enable_dns64                                   = false
+      + enable_resource_name_dns_a_record_on_launch    = false
+      + enable_resource_name_dns_aaaa_record_on_launch = false
+      + id                                             = (known after apply)
+      + ipv6_cidr_block_association_id                 = (known after apply)
+      + ipv6_native                                    = false
+      + map_public_ip_on_launch                        = true
+      + owner_id                                       = (known after apply)
+      + private_dns_hostname_type_on_launch            = (known after apply)
+      + tags                                           = {
+          + "Name"                   = "public-subnet-1"
+          + "environment"            = "PRD"
+          + "equipo"                 = "Grupo6"
+          + "kubernetes.io/role/elb" = "1"
+          + "proyecto"               = "PINF"
+          + "repositorio"            = "git@github.com:hdbarrios/devops-g6-pin-final.git"
+        }
+      + tags_all                                       = {
+          + "Name"                   = "public-subnet-1"
+          + "environment"            = "PRD"
+          + "equipo"                 = "Grupo6"
+          + "kubernetes.io/role/elb" = "1"
+          + "proyecto"               = "PINF"
+          + "repositorio"            = "git@github.com:hdbarrios/devops-g6-pin-final.git"
+        }
+      + vpc_id                                         = (known after apply)
+    }
+
+  # aws_subnet.public_subnets[1] will be created
+  + resource "aws_subnet" "public_subnets" {
+      + arn                                            = (known after apply)
+      + assign_ipv6_address_on_creation                = false
+      + availability_zone                              = "us-east-1b"
+      + availability_zone_id                           = (known after apply)
+      + cidr_block                                     = "10.11.30.0/24"
+      + enable_dns64                                   = false
+      + enable_resource_name_dns_a_record_on_launch    = false
+      + enable_resource_name_dns_aaaa_record_on_launch = false
+      + id                                             = (known after apply)
+      + ipv6_cidr_block_association_id                 = (known after apply)
+      + ipv6_native                                    = false
+      + map_public_ip_on_launch                        = true
+      + owner_id                                       = (known after apply)
+      + private_dns_hostname_type_on_launch            = (known after apply)
+      + tags                                           = {
+          + "Name"                   = "public-subnet-2"
+          + "environment"            = "PRD"
+          + "equipo"                 = "Grupo6"
+          + "kubernetes.io/role/elb" = "1"
+          + "proyecto"               = "PINF"
+          + "repositorio"            = "git@github.com:hdbarrios/devops-g6-pin-final.git"
+        }
+      + tags_all                                       = {
+          + "Name"                   = "public-subnet-2"
+          + "environment"            = "PRD"
+          + "equipo"                 = "Grupo6"
+          + "kubernetes.io/role/elb" = "1"
+          + "proyecto"               = "PINF"
+          + "repositorio"            = "git@github.com:hdbarrios/devops-g6-pin-final.git"
+        }
+      + vpc_id                                         = (known after apply)
+    }
+
+  # aws_subnet.public_subnets[2] will be created
+  + resource "aws_subnet" "public_subnets" {
+      + arn                                            = (known after apply)
+      + assign_ipv6_address_on_creation                = false
+      + availability_zone                              = "us-east-1c"
+      + availability_zone_id                           = (known after apply)
+      + cidr_block                                     = "10.11.40.0/24"
+      + enable_dns64                                   = false
+      + enable_resource_name_dns_a_record_on_launch    = false
+      + enable_resource_name_dns_aaaa_record_on_launch = false
+      + id                                             = (known after apply)
+      + ipv6_cidr_block_association_id                 = (known after apply)
+      + ipv6_native                                    = false
+      + map_public_ip_on_launch                        = true
+      + owner_id                                       = (known after apply)
+      + private_dns_hostname_type_on_launch            = (known after apply)
+      + tags                                           = {
+          + "Name"                   = "public-subnet-3"
+          + "environment"            = "PRD"
+          + "equipo"                 = "Grupo6"
+          + "kubernetes.io/role/elb" = "1"
+          + "proyecto"               = "PINF"
+          + "repositorio"            = "git@github.com:hdbarrios/devops-g6-pin-final.git"
+        }
+      + tags_all                                       = {
+          + "Name"                   = "public-subnet-3"
+          + "environment"            = "PRD"
+          + "equipo"                 = "Grupo6"
+          + "kubernetes.io/role/elb" = "1"
+          + "proyecto"               = "PINF"
+          + "repositorio"            = "git@github.com:hdbarrios/devops-g6-pin-final.git"
+        }
+      + vpc_id                                         = (known after apply)
+    }
+
+  # aws_vpc.vpc will be created
+  + resource "aws_vpc" "vpc" {
+      + arn                                  = (known after apply)
+      + cidr_block                           = "10.11.0.0/16"
+      + default_network_acl_id               = (known after apply)
+      + default_route_table_id               = (known after apply)
+      + default_security_group_id            = (known after apply)
+      + dhcp_options_id                      = (known after apply)
+      + enable_dns_hostnames                 = true
+      + enable_dns_support                   = true
+      + enable_network_address_usage_metrics = (known after apply)
+      + id                                   = (known after apply)
+      + instance_tenancy                     = "default"
+      + ipv6_association_id                  = (known after apply)
+      + ipv6_cidr_block                      = (known after apply)
+      + ipv6_cidr_block_network_border_group = (known after apply)
+      + main_route_table_id                  = (known after apply)
+      + owner_id                             = (known after apply)
+      + tags                                 = {
+          + "Name"        = "terraform-vpc"
+          + "environment" = "PRD"
+          + "equipo"      = "Grupo6"
+          + "proyecto"    = "PINF"
+          + "repositorio" = "git@github.com:hdbarrios/devops-g6-pin-final.git"
+        }
+      + tags_all                             = {
+          + "Name"        = "terraform-vpc"
+          + "environment" = "PRD"
+          + "equipo"      = "Grupo6"
+          + "proyecto"    = "PINF"
+          + "repositorio" = "git@github.com:hdbarrios/devops-g6-pin-final.git"
+        }
+    }
+
+  # module.ebs_csi_driver_irsa.data.aws_iam_policy_document.this[0] will be read during apply
+  # (config refers to values not yet known)
+ <= data "aws_iam_policy_document" "this" {
+      + id            = (known after apply)
+      + json          = (known after apply)
+      + minified_json = (known after apply)
+
+      + statement {
+          + actions = [
+              + "sts:AssumeRoleWithWebIdentity",
+            ]
+          + effect  = "Allow"
+
+          + condition {
+              + test     = "StringEquals"
+              + values   = [
+                  + "sts.amazonaws.com",
+                ]
+              + variable = (known after apply)
+            }
+          + condition {
+              + test     = "StringEquals"
+              + values   = [
+                  + "system:serviceaccount:kube-system:ebs-csi-controller-sa",
+                ]
+              + variable = (known after apply)
+            }
+
+          + principals {
+              + identifiers = [
+                  + (known after apply),
+                ]
+              + type        = "Federated"
+            }
+        }
+    }
+
+  # module.ebs_csi_driver_irsa.aws_iam_policy.ebs_csi[0] will be created
+  + resource "aws_iam_policy" "ebs_csi" {
+      + arn              = (known after apply)
+      + attachment_count = (known after apply)
+      + description      = "Provides permissions to manage EBS volumes via the container storage interface driver"
+      + id               = (known after apply)
+      + name             = (known after apply)
+      + name_prefix      = "AmazonEKS_EBS_CSI_Policy-"
+      + path             = "/"
+      + policy           = jsonencode(
+            {
+              + Statement = [
+                  + {
+                      + Action   = [
+                          + "ec2:ModifyVolume",
+                          + "ec2:EnableFastSnapshotRestores",
+                          + "ec2:DetachVolume",
+                          + "ec2:DescribeVolumesModifications",
+                          + "ec2:DescribeVolumes",
+                          + "ec2:DescribeTags",
+                          + "ec2:DescribeSnapshots",
+                          + "ec2:DescribeInstances",
+                          + "ec2:DescribeAvailabilityZones",
+                          + "ec2:CreateSnapshot",
+                          + "ec2:AttachVolume",
+                        ]
+                      + Effect   = "Allow"
+                      + Resource = "*"
+                    },
+                  + {
+                      + Action    = "ec2:CreateTags"
+                      + Condition = {
+                          + StringEquals = {
+                              + "ec2:CreateAction" = [
+                                  + "CreateVolume",
+                                  + "CreateSnapshot",
+                                ]
+                            }
+                        }
+                      + Effect    = "Allow"
+                      + Resource  = [
+                          + "arn:aws:ec2:*:*:volume/*",
+                          + "arn:aws:ec2:*:*:snapshot/*",
+                        ]
+                    },
+                  + {
+                      + Action   = "ec2:DeleteTags"
+                      + Effect   = "Allow"
+                      + Resource = [
+                          + "arn:aws:ec2:*:*:volume/*",
+                          + "arn:aws:ec2:*:*:snapshot/*",
+                        ]
+                    },
+                  + {
+                      + Action    = "ec2:CreateVolume"
+                      + Condition = {
+                          + StringLike = {
+                              + "aws:RequestTag/ebs.csi.aws.com/cluster" = "true"
+                            }
+                        }
+                      + Effect    = "Allow"
+                      + Resource  = "arn:aws:ec2:*:*:volume/*"
+                    },
+                  + {
+                      + Action    = "ec2:CreateVolume"
+                      + Condition = {
+                          + StringLike = {
+                              + "aws:RequestTag/CSIVolumeName" = "*"
+                            }
+                        }
+                      + Effect    = "Allow"
+                      + Resource  = "arn:aws:ec2:*:*:volume/*"
+                    },
+                  + {
+                      + Action    = "ec2:CreateVolume"
+                      + Condition = {
+                          + StringLike = {
+                              + "aws:RequestTag/kubernetes.io/cluster/*" = "owned"
+                            }
+                        }
+                      + Effect    = "Allow"
+                      + Resource  = "*"
+                    },
+                  + {
+                      + Action   = "ec2:CreateVolume"
+                      + Effect   = "Allow"
+                      + Resource = "arn:aws:ec2:*:*:snapshot/*"
+                    },
+                  + {
+                      + Action    = "ec2:DeleteVolume"
+                      + Condition = {
+                          + StringLike = {
+                              + "ec2:ResourceTag/ebs.csi.aws.com/cluster" = "true"
+                            }
+                        }
+                      + Effect    = "Allow"
+                      + Resource  = "*"
+                    },
+                  + {
+                      + Action    = "ec2:DeleteVolume"
+                      + Condition = {
+                          + StringLike = {
+                              + "ec2:ResourceTag/CSIVolumeName" = "*"
+                            }
+                        }
+                      + Effect    = "Allow"
+                      + Resource  = "*"
+                    },
+                  + {
+                      + Action    = "ec2:DeleteVolume"
+                      + Condition = {
+                          + StringLike = {
+                              + "ec2:ResourceTag/kubernetes.io/cluster/*" = "owned"
+                            }
+                        }
+                      + Effect    = "Allow"
+                      + Resource  = "*"
+                    },
+                  + {
+                      + Action    = "ec2:DeleteVolume"
+                      + Condition = {
+                          + StringLike = {
+                              + "ec2:ResourceTag/kubernetes.io/created-for/pvc/name" = "*"
+                            }
+                        }
+                      + Effect    = "Allow"
+                      + Resource  = "*"
+                    },
+                  + {
+                      + Action    = "ec2:DeleteSnapshot"
+                      + Condition = {
+                          + StringLike = {
+                              + "ec2:ResourceTag/CSIVolumeSnapshotName" = "*"
+                            }
+                        }
+                      + Effect    = "Allow"
+                      + Resource  = "*"
+                    },
+                  + {
+                      + Action    = "ec2:DeleteSnapshot"
+                      + Condition = {
+                          + StringLike = {
+                              + "ec2:ResourceTag/ebs.csi.aws.com/cluster" = "true"
+                            }
+                        }
+                      + Effect    = "Allow"
+                      + Resource  = "*"
+                    },
+                ]
+              + Version   = "2012-10-17"
+            }
+        )
+      + policy_id        = (known after apply)
+      + tags             = {
+          + "environment" = "PRD"
+          + "equipo"      = "Grupo6"
+          + "proyecto"    = "PINF"
+          + "repositorio" = "git@github.com:hdbarrios/devops-g6-pin-final.git"
+        }
+      + tags_all         = {
+          + "environment" = "PRD"
+          + "equipo"      = "Grupo6"
+          + "proyecto"    = "PINF"
+          + "repositorio" = "git@github.com:hdbarrios/devops-g6-pin-final.git"
+        }
+    }
+
+  # module.ebs_csi_driver_irsa.aws_iam_role.this[0] will be created
+  + resource "aws_iam_role" "this" {
+      + arn                   = (known after apply)
+      + assume_role_policy    = (known after apply)
+      + create_date           = (known after apply)
+      + force_detach_policies = true
+      + id                    = (known after apply)
+      + managed_policy_arns   = (known after apply)
+      + max_session_duration  = 3600
+      + name                  = (known after apply)
+      + name_prefix           = "ebs-csi-driver-"
+      + path                  = "/"
+      + tags                  = {
+          + "environment" = "PRD"
+          + "equipo"      = "Grupo6"
+          + "proyecto"    = "PINF"
+          + "repositorio" = "git@github.com:hdbarrios/devops-g6-pin-final.git"
+        }
+      + tags_all              = {
+          + "environment" = "PRD"
+          + "equipo"      = "Grupo6"
+          + "proyecto"    = "PINF"
+          + "repositorio" = "git@github.com:hdbarrios/devops-g6-pin-final.git"
+        }
+      + unique_id             = (known after apply)
+
+      + inline_policy (known after apply)
+    }
+
+  # module.ebs_csi_driver_irsa.aws_iam_role_policy_attachment.ebs_csi[0] will be created
+  + resource "aws_iam_role_policy_attachment" "ebs_csi" {
+      + id         = (known after apply)
+      + policy_arn = (known after apply)
+      + role       = (known after apply)
+    }
+
+  # module.efs_csi_driver_irsa.data.aws_iam_policy_document.this[0] will be read during apply
+  # (config refers to values not yet known)
+ <= data "aws_iam_policy_document" "this" {
+      + id            = (known after apply)
+      + json          = (known after apply)
+      + minified_json = (known after apply)
+
+      + statement {
+          + actions = [
+              + "sts:AssumeRoleWithWebIdentity",
+            ]
+          + effect  = "Allow"
+
+          + condition {
+              + test     = "StringEquals"
+              + values   = [
+                  + "sts.amazonaws.com",
+                ]
+              + variable = (known after apply)
+            }
+          + condition {
+              + test     = "StringEquals"
+              + values   = [
+                  + "system:serviceaccount:kube-system:efs-csi-controller-sa",
+                ]
+              + variable = (known after apply)
+            }
+
+          + principals {
+              + identifiers = [
+                  + (known after apply),
+                ]
+              + type        = "Federated"
+            }
+        }
+    }
+
+  # module.efs_csi_driver_irsa.aws_iam_policy.efs_csi[0] will be created
+  + resource "aws_iam_policy" "efs_csi" {
+      + arn              = (known after apply)
+      + attachment_count = (known after apply)
+      + description      = "Provides permissions to manage EFS volumes via the container storage interface driver"
+      + id               = (known after apply)
+      + name             = (known after apply)
+      + name_prefix      = "AmazonEKS_EFS_CSI_Policy-"
+      + path             = "/"
+      + policy           = jsonencode(
+            {
+              + Statement = [
+                  + {
+                      + Action   = [
+                          + "elasticfilesystem:DescribeMountTargets",
+                          + "elasticfilesystem:DescribeFileSystems",
+                          + "elasticfilesystem:DescribeAccessPoints",
+                          + "ec2:DescribeAvailabilityZones",
+                        ]
+                      + Effect   = "Allow"
+                      + Resource = "*"
+                    },
+                  + {
+                      + Action    = "elasticfilesystem:CreateAccessPoint"
+                      + Condition = {
+                          + StringLike = {
+                              + "aws:RequestTag/efs.csi.aws.com/cluster" = "true"
+                            }
+                        }
+                      + Effect    = "Allow"
+                      + Resource  = "*"
+                    },
+                  + {
+                      + Action    = "elasticfilesystem:TagResource"
+                      + Condition = {
+                          + StringLike = {
+                              + "aws:RequestTag/efs.csi.aws.com/cluster" = "true"
+                            }
+                        }
+                      + Effect    = "Allow"
+                      + Resource  = "*"
+                    },
+                  + {
+                      + Action    = "elasticfilesystem:DeleteAccessPoint"
+                      + Condition = {
+                          + StringEquals = {
+                              + "aws:ResourceTag/efs.csi.aws.com/cluster" = "true"
+                            }
+                        }
+                      + Effect    = "Allow"
+                      + Resource  = "*"
+                    },
+                ]
+              + Version   = "2012-10-17"
+            }
+        )
+      + policy_id        = (known after apply)
+      + tags             = {
+          + "environment" = "PRD"
+          + "equipo"      = "Grupo6"
+          + "proyecto"    = "PINF"
+          + "repositorio" = "git@github.com:hdbarrios/devops-g6-pin-final.git"
+        }
+      + tags_all         = {
+          + "environment" = "PRD"
+          + "equipo"      = "Grupo6"
+          + "proyecto"    = "PINF"
+          + "repositorio" = "git@github.com:hdbarrios/devops-g6-pin-final.git"
+        }
+    }
+
+  # module.efs_csi_driver_irsa.aws_iam_role.this[0] will be created
+  + resource "aws_iam_role" "this" {
+      + arn                   = (known after apply)
+      + assume_role_policy    = (known after apply)
+      + create_date           = (known after apply)
+      + force_detach_policies = true
+      + id                    = (known after apply)
+      + managed_policy_arns   = (known after apply)
+      + max_session_duration  = 3600
+      + name                  = (known after apply)
+      + name_prefix           = "efs-csi-driver-"
+      + path                  = "/"
+      + tags                  = {
+          + "environment" = "PRD"
+          + "equipo"      = "Grupo6"
+          + "proyecto"    = "PINF"
+          + "repositorio" = "git@github.com:hdbarrios/devops-g6-pin-final.git"
+        }
+      + tags_all              = {
+          + "environment" = "PRD"
+          + "equipo"      = "Grupo6"
+          + "proyecto"    = "PINF"
+          + "repositorio" = "git@github.com:hdbarrios/devops-g6-pin-final.git"
+        }
+      + unique_id             = (known after apply)
+
+      + inline_policy (known after apply)
+    }
+
+  # module.efs_csi_driver_irsa.aws_iam_role_policy_attachment.efs_csi[0] will be created
+  + resource "aws_iam_role_policy_attachment" "efs_csi" {
+      + id         = (known after apply)
+      + policy_arn = (known after apply)
+      + role       = (known after apply)
+    }
+
+  # module.eks.data.aws_eks_addon_version.this["aws-ebs-csi-driver"] will be read during apply
+  # (depends on a resource or a module with changes pending)
+ <= data "aws_eks_addon_version" "this" {
+      + addon_name         = "aws-ebs-csi-driver"
+      + id                 = (known after apply)
+      + kubernetes_version = "1.30"
+      + version            = (known after apply)
+    }
+
+  # module.eks.data.aws_eks_addon_version.this["aws-efs-csi-driver"] will be read during apply
+  # (depends on a resource or a module with changes pending)
+ <= data "aws_eks_addon_version" "this" {
+      + addon_name         = "aws-efs-csi-driver"
+      + id                 = (known after apply)
+      + kubernetes_version = "1.30"
+      + version            = (known after apply)
+    }
+
+  # module.eks.data.aws_eks_addon_version.this["coredns"] will be read during apply
+  # (depends on a resource or a module with changes pending)
+ <= data "aws_eks_addon_version" "this" {
+      + addon_name         = "coredns"
+      + id                 = (known after apply)
+      + kubernetes_version = "1.30"
+      + most_recent        = true
+      + version            = (known after apply)
+    }
+
+  # module.eks.data.aws_eks_addon_version.this["eks-pod-identity-agent"] will be read during apply
+  # (depends on a resource or a module with changes pending)
+ <= data "aws_eks_addon_version" "this" {
+      + addon_name         = "eks-pod-identity-agent"
+      + id                 = (known after apply)
+      + kubernetes_version = "1.30"
+      + most_recent        = true
+      + version            = (known after apply)
+    }
+
+  # module.eks.data.aws_eks_addon_version.this["kube-proxy"] will be read during apply
+  # (depends on a resource or a module with changes pending)
+ <= data "aws_eks_addon_version" "this" {
+      + addon_name         = "kube-proxy"
+      + id                 = (known after apply)
+      + kubernetes_version = "1.30"
+      + most_recent        = true
+      + version            = (known after apply)
+    }
+
+  # module.eks.data.aws_eks_addon_version.this["vpc-cni"] will be read during apply
+  # (depends on a resource or a module with changes pending)
+ <= data "aws_eks_addon_version" "this" {
+      + addon_name         = "vpc-cni"
+      + id                 = (known after apply)
+      + kubernetes_version = "1.30"
+      + most_recent        = true
+      + version            = (known after apply)
+    }
+
+  # module.eks.data.tls_certificate.this[0] will be read during apply
+  # (config refers to values not yet known)
+ <= data "tls_certificate" "this" {
+      + certificates = (known after apply)
+      + id           = (known after apply)
+      + url          = (known after apply)
+    }
+
+  # module.eks.aws_cloudwatch_log_group.this[0] will be created
+  + resource "aws_cloudwatch_log_group" "this" {
+      + arn               = (known after apply)
+      + id                = (known after apply)
+      + log_group_class   = (known after apply)
+      + name              = "/aws/eks/mundos-e/cluster"
+      + name_prefix       = (known after apply)
+      + retention_in_days = 90
+      + skip_destroy      = false
+      + tags              = {
+          + "Name"        = "/aws/eks/mundos-e/cluster"
+          + "environment" = "PRD"
+          + "equipo"      = "Grupo6"
+          + "proyecto"    = "PINF"
+          + "repositorio" = "git@github.com:hdbarrios/devops-g6-pin-final.git"
+        }
+      + tags_all          = {
+          + "Name"        = "/aws/eks/mundos-e/cluster"
+          + "environment" = "PRD"
+          + "equipo"      = "Grupo6"
+          + "proyecto"    = "PINF"
+          + "repositorio" = "git@github.com:hdbarrios/devops-g6-pin-final.git"
+        }
+    }
+
+  # module.eks.aws_ec2_tag.cluster_primary_security_group["environment"] will be created
+  + resource "aws_ec2_tag" "cluster_primary_security_group" {
+      + id          = (known after apply)
+      + key         = "environment"
+      + resource_id = (known after apply)
+      + value       = "PRD"
+    }
+
+  # module.eks.aws_ec2_tag.cluster_primary_security_group["equipo"] will be created
+  + resource "aws_ec2_tag" "cluster_primary_security_group" {
+      + id          = (known after apply)
+      + key         = "equipo"
+      + resource_id = (known after apply)
+      + value       = "Grupo6"
+    }
+
+  # module.eks.aws_ec2_tag.cluster_primary_security_group["proyecto"] will be created
+  + resource "aws_ec2_tag" "cluster_primary_security_group" {
+      + id          = (known after apply)
+      + key         = "proyecto"
+      + resource_id = (known after apply)
+      + value       = "PINF"
+    }
+
+  # module.eks.aws_ec2_tag.cluster_primary_security_group["repositorio"] will be created
+  + resource "aws_ec2_tag" "cluster_primary_security_group" {
+      + id          = (known after apply)
+      + key         = "repositorio"
+      + resource_id = (known after apply)
+      + value       = "git@github.com:hdbarrios/devops-g6-pin-final.git"
+    }
+
+  # module.eks.aws_eks_access_entry.this["admin_role"] will be created
+  + resource "aws_eks_access_entry" "this" {
+      + access_entry_arn  = (known after apply)
+      + cluster_name      = (known after apply)
+      + created_at        = (known after apply)
+      + id                = (known after apply)
+      + kubernetes_groups = (known after apply)
+      + modified_at       = (known after apply)
+      + principal_arn     = (known after apply)
+      + tags              = {
+          + "Name"        = "mundos-e"
+          + "environment" = "PRD"
+          + "equipo"      = "Grupo6"
+          + "proyecto"    = "PINF"
+          + "repositorio" = "git@github.com:hdbarrios/devops-g6-pin-final.git"
+        }
+      + tags_all          = {
+          + "Name"        = "mundos-e"
+          + "environment" = "PRD"
+          + "equipo"      = "Grupo6"
+          + "proyecto"    = "PINF"
+          + "repositorio" = "git@github.com:hdbarrios/devops-g6-pin-final.git"
+        }
+      + type              = "STANDARD"
+      + user_name         = (known after apply)
+    }
+
+  # module.eks.aws_eks_access_entry.this["cluster_creator"] will be created
+  + resource "aws_eks_access_entry" "this" {
+      + access_entry_arn  = (known after apply)
+      + cluster_name      = (known after apply)
+      + created_at        = (known after apply)
+      + id                = (known after apply)
+      + kubernetes_groups = (known after apply)
+      + modified_at       = (known after apply)
+      + principal_arn     = "arn:aws:iam::536697232168:user/pin-f"
+      + tags              = {
+          + "Name"        = "mundos-e"
+          + "environment" = "PRD"
+          + "equipo"      = "Grupo6"
+          + "proyecto"    = "PINF"
+          + "repositorio" = "git@github.com:hdbarrios/devops-g6-pin-final.git"
+        }
+      + tags_all          = {
+          + "Name"        = "mundos-e"
+          + "environment" = "PRD"
+          + "equipo"      = "Grupo6"
+          + "proyecto"    = "PINF"
+          + "repositorio" = "git@github.com:hdbarrios/devops-g6-pin-final.git"
+        }
+      + type              = "STANDARD"
+      + user_name         = (known after apply)
+    }
+
+  # module.eks.aws_eks_access_entry.this["programmatic_user"] will be created
+  + resource "aws_eks_access_entry" "this" {
+      + access_entry_arn  = (known after apply)
+      + cluster_name      = (known after apply)
+      + created_at        = (known after apply)
+      + id                = (known after apply)
+      + kubernetes_groups = (known after apply)
+      + modified_at       = (known after apply)
+      + principal_arn     = "arn:aws:iam::536697232168:user/ec2_admin_role_cicd"
+      + tags              = {
+          + "Name"        = "mundos-e"
+          + "environment" = "PRD"
+          + "equipo"      = "Grupo6"
+          + "proyecto"    = "PINF"
+          + "repositorio" = "git@github.com:hdbarrios/devops-g6-pin-final.git"
+        }
+      + tags_all          = {
+          + "Name"        = "mundos-e"
+          + "environment" = "PRD"
+          + "equipo"      = "Grupo6"
+          + "proyecto"    = "PINF"
+          + "repositorio" = "git@github.com:hdbarrios/devops-g6-pin-final.git"
+        }
+      + type              = "STANDARD"
+      + user_name         = (known after apply)
+    }
+
+  # module.eks.aws_eks_access_policy_association.this["cluster_creator_admin"] will be created
+  + resource "aws_eks_access_policy_association" "this" {
+      + associated_at = (known after apply)
+      + cluster_name  = (known after apply)
+      + id            = (known after apply)
+      + modified_at   = (known after apply)
+      + policy_arn    = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy"
+      + principal_arn = "arn:aws:iam::536697232168:user/pin-f"
+
+      + access_scope {
+          + type = "cluster"
+        }
+    }
+
+  # module.eks.aws_eks_access_policy_association.this["programmatic_user_programmatic_user"] will be created
+  + resource "aws_eks_access_policy_association" "this" {
+      + associated_at = (known after apply)
+      + cluster_name  = (known after apply)
+      + id            = (known after apply)
+      + modified_at   = (known after apply)
+      + policy_arn    = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy"
+      + principal_arn = "arn:aws:iam::536697232168:user/ec2_admin_role_cicd"
+
+      + access_scope {
+          + type = "cluster"
+        }
+    }
+
+  # module.eks.aws_eks_addon.this["aws-ebs-csi-driver"] will be created
+  + resource "aws_eks_addon" "this" {
+      + addon_name                  = "aws-ebs-csi-driver"
+      + addon_version               = (known after apply)
+      + arn                         = (known after apply)
+      + cluster_name                = (known after apply)
+      + configuration_values        = (known after apply)
+      + created_at                  = (known after apply)
+      + id                          = (known after apply)
+      + modified_at                 = (known after apply)
+      + preserve                    = true
+      + resolve_conflicts_on_create = "OVERWRITE"
+      + resolve_conflicts_on_update = "OVERWRITE"
+      + service_account_role_arn    = (known after apply)
+      + tags                        = {
+          + "Name"        = "mundos-e"
+          + "environment" = "PRD"
+          + "equipo"      = "Grupo6"
+          + "proyecto"    = "PINF"
+          + "repositorio" = "git@github.com:hdbarrios/devops-g6-pin-final.git"
+        }
+      + tags_all                    = {
+          + "Name"        = "mundos-e"
+          + "environment" = "PRD"
+          + "equipo"      = "Grupo6"
+          + "proyecto"    = "PINF"
+          + "repositorio" = "git@github.com:hdbarrios/devops-g6-pin-final.git"
+        }
+
+      + timeouts {}
+    }
+
+  # module.eks.aws_eks_addon.this["aws-efs-csi-driver"] will be created
+  + resource "aws_eks_addon" "this" {
+      + addon_name                  = "aws-efs-csi-driver"
+      + addon_version               = (known after apply)
+      + arn                         = (known after apply)
+      + cluster_name                = (known after apply)
+      + configuration_values        = (known after apply)
+      + created_at                  = (known after apply)
+      + id                          = (known after apply)
+      + modified_at                 = (known after apply)
+      + preserve                    = true
+      + resolve_conflicts_on_create = "OVERWRITE"
+      + resolve_conflicts_on_update = "OVERWRITE"
+      + service_account_role_arn    = (known after apply)
+      + tags                        = {
+          + "Name"        = "mundos-e"
+          + "environment" = "PRD"
+          + "equipo"      = "Grupo6"
+          + "proyecto"    = "PINF"
+          + "repositorio" = "git@github.com:hdbarrios/devops-g6-pin-final.git"
+        }
+      + tags_all                    = {
+          + "Name"        = "mundos-e"
+          + "environment" = "PRD"
+          + "equipo"      = "Grupo6"
+          + "proyecto"    = "PINF"
+          + "repositorio" = "git@github.com:hdbarrios/devops-g6-pin-final.git"
+        }
+
+      + timeouts {}
+    }
+
+  # module.eks.aws_eks_addon.this["coredns"] will be created
+  + resource "aws_eks_addon" "this" {
+      + addon_name                  = "coredns"
+      + addon_version               = (known after apply)
+      + arn                         = (known after apply)
+      + cluster_name                = (known after apply)
+      + configuration_values        = (known after apply)
+      + created_at                  = (known after apply)
+      + id                          = (known after apply)
+      + modified_at                 = (known after apply)
+      + preserve                    = true
+      + resolve_conflicts_on_create = "OVERWRITE"
+      + resolve_conflicts_on_update = "OVERWRITE"
+      + tags                        = {
+          + "Name"        = "mundos-e"
+          + "environment" = "PRD"
+          + "equipo"      = "Grupo6"
+          + "proyecto"    = "PINF"
+          + "repositorio" = "git@github.com:hdbarrios/devops-g6-pin-final.git"
+        }
+      + tags_all                    = {
+          + "Name"        = "mundos-e"
+          + "environment" = "PRD"
+          + "equipo"      = "Grupo6"
+          + "proyecto"    = "PINF"
+          + "repositorio" = "git@github.com:hdbarrios/devops-g6-pin-final.git"
+        }
+
+      + timeouts {}
+    }
+
+  # module.eks.aws_eks_addon.this["eks-pod-identity-agent"] will be created
+  + resource "aws_eks_addon" "this" {
+      + addon_name                  = "eks-pod-identity-agent"
+      + addon_version               = (known after apply)
+      + arn                         = (known after apply)
+      + cluster_name                = (known after apply)
+      + configuration_values        = (known after apply)
+      + created_at                  = (known after apply)
+      + id                          = (known after apply)
+      + modified_at                 = (known after apply)
+      + preserve                    = true
+      + resolve_conflicts_on_create = "OVERWRITE"
+      + resolve_conflicts_on_update = "OVERWRITE"
+      + tags                        = {
+          + "Name"        = "mundos-e"
+          + "environment" = "PRD"
+          + "equipo"      = "Grupo6"
+          + "proyecto"    = "PINF"
+          + "repositorio" = "git@github.com:hdbarrios/devops-g6-pin-final.git"
+        }
+      + tags_all                    = {
+          + "Name"        = "mundos-e"
+          + "environment" = "PRD"
+          + "equipo"      = "Grupo6"
+          + "proyecto"    = "PINF"
+          + "repositorio" = "git@github.com:hdbarrios/devops-g6-pin-final.git"
+        }
+
+      + timeouts {}
+    }
+
+  # module.eks.aws_eks_addon.this["kube-proxy"] will be created
+  + resource "aws_eks_addon" "this" {
+      + addon_name                  = "kube-proxy"
+      + addon_version               = (known after apply)
+      + arn                         = (known after apply)
+      + cluster_name                = (known after apply)
+      + configuration_values        = (known after apply)
+      + created_at                  = (known after apply)
+      + id                          = (known after apply)
+      + modified_at                 = (known after apply)
+      + preserve                    = true
+      + resolve_conflicts_on_create = "OVERWRITE"
+      + resolve_conflicts_on_update = "OVERWRITE"
+      + tags                        = {
+          + "Name"        = "mundos-e"
+          + "environment" = "PRD"
+          + "equipo"      = "Grupo6"
+          + "proyecto"    = "PINF"
+          + "repositorio" = "git@github.com:hdbarrios/devops-g6-pin-final.git"
+        }
+      + tags_all                    = {
+          + "Name"        = "mundos-e"
+          + "environment" = "PRD"
+          + "equipo"      = "Grupo6"
+          + "proyecto"    = "PINF"
+          + "repositorio" = "git@github.com:hdbarrios/devops-g6-pin-final.git"
+        }
+
+      + timeouts {}
+    }
+
+  # module.eks.aws_eks_addon.this["vpc-cni"] will be created
+  + resource "aws_eks_addon" "this" {
+      + addon_name                  = "vpc-cni"
+      + addon_version               = (known after apply)
+      + arn                         = (known after apply)
+      + cluster_name                = (known after apply)
+      + configuration_values        = (known after apply)
+      + created_at                  = (known after apply)
+      + id                          = (known after apply)
+      + modified_at                 = (known after apply)
+      + preserve                    = true
+      + resolve_conflicts_on_create = "OVERWRITE"
+      + resolve_conflicts_on_update = "OVERWRITE"
+      + tags                        = {
+          + "Name"        = "mundos-e"
+          + "environment" = "PRD"
+          + "equipo"      = "Grupo6"
+          + "proyecto"    = "PINF"
+          + "repositorio" = "git@github.com:hdbarrios/devops-g6-pin-final.git"
+        }
+      + tags_all                    = {
+          + "Name"        = "mundos-e"
+          + "environment" = "PRD"
+          + "equipo"      = "Grupo6"
+          + "proyecto"    = "PINF"
+          + "repositorio" = "git@github.com:hdbarrios/devops-g6-pin-final.git"
+        }
+
+      + timeouts {}
+    }
+
+  # module.eks.aws_eks_cluster.this[0] will be created
+  + resource "aws_eks_cluster" "this" {
+      + arn                           = (known after apply)
+      + bootstrap_self_managed_addons = true
+      + certificate_authority         = (known after apply)
+      + cluster_id                    = (known after apply)
+      + created_at                    = (known after apply)
+      + enabled_cluster_log_types     = [
+          + "api",
+          + "audit",
+          + "authenticator",
+        ]
+      + endpoint                      = (known after apply)
+      + id                            = (known after apply)
+      + identity                      = (known after apply)
+      + name                          = "mundos-e"
+      + platform_version              = (known after apply)
+      + role_arn                      = (known after apply)
+      + status                        = (known after apply)
+      + tags                          = {
+          + "Name"                  = "mundos-e"
+          + "environment"           = "PRD"
+          + "equipo"                = "Grupo6"
+          + "proyecto"              = "PINF"
+          + "repositorio"           = "git@github.com:hdbarrios/devops-g6-pin-final.git"
+          + "terraform-aws-modules" = "eks"
+        }
+      + tags_all                      = {
+          + "Name"                  = "mundos-e"
+          + "environment"           = "PRD"
+          + "equipo"                = "Grupo6"
+          + "proyecto"              = "PINF"
+          + "repositorio"           = "git@github.com:hdbarrios/devops-g6-pin-final.git"
+          + "terraform-aws-modules" = "eks"
+        }
+      + version                       = "1.30"
+
+      + access_config {
+          + authentication_mode                         = "API_AND_CONFIG_MAP"
+          + bootstrap_cluster_creator_admin_permissions = false
+        }
+
+      + encryption_config {
+          + resources = [
+              + "secrets",
+            ]
+
+          + provider {
+              + key_arn = (known after apply)
+            }
+        }
+
+      + kubernetes_network_config {
+          + ip_family         = "ipv4"
+          + service_ipv4_cidr = (known after apply)
+          + service_ipv6_cidr = (known after apply)
+
+          + elastic_load_balancing (known after apply)
+        }
+
+      + timeouts {}
+
+      + upgrade_policy (known after apply)
+
+      + vpc_config {
+          + cluster_security_group_id = (known after apply)
+          + endpoint_private_access   = true
+          + endpoint_public_access    = true
+          + public_access_cidrs       = [
+              + "0.0.0.0/0",
+            ]
+          + security_group_ids        = (known after apply)
+          + subnet_ids                = (known after apply)
+          + vpc_id                    = (known after apply)
+        }
+    }
+
+  # module.eks.aws_iam_openid_connect_provider.oidc_provider[0] will be created
+  + resource "aws_iam_openid_connect_provider" "oidc_provider" {
+      + arn             = (known after apply)
+      + client_id_list  = [
+          + "sts.amazonaws.com",
+        ]
+      + id              = (known after apply)
+      + tags            = {
+          + "Name"        = "mundos-e"
+          + "environment" = "PRD"
+          + "equipo"      = "Grupo6"
+          + "proyecto"    = "PINF"
+          + "repositorio" = "git@github.com:hdbarrios/devops-g6-pin-final.git"
+        }
+      + tags_all        = {
+          + "Name"        = "mundos-e"
+          + "environment" = "PRD"
+          + "equipo"      = "Grupo6"
+          + "proyecto"    = "PINF"
+          + "repositorio" = "git@github.com:hdbarrios/devops-g6-pin-final.git"
+        }
+      + thumbprint_list = (known after apply)
+      + url             = (known after apply)
+    }
+
+  # module.eks.aws_iam_policy.cluster_encryption[0] will be created
+  + resource "aws_iam_policy" "cluster_encryption" {
+      + arn              = (known after apply)
+      + attachment_count = (known after apply)
+      + description      = "Cluster encryption policy to allow cluster role to utilize CMK provided"
+      + id               = (known after apply)
+      + name             = (known after apply)
+      + name_prefix      = "mundos-e-cluster-ClusterEncryption"
+      + path             = "/"
+      + policy           = (known after apply)
+      + policy_id        = (known after apply)
+      + tags             = {
+          + "Name"        = "mundos-e"
+          + "environment" = "PRD"
+          + "equipo"      = "Grupo6"
+          + "proyecto"    = "PINF"
+          + "repositorio" = "git@github.com:hdbarrios/devops-g6-pin-final.git"
+        }
+      + tags_all         = {
+          + "Name"        = "mundos-e"
+          + "environment" = "PRD"
+          + "equipo"      = "Grupo6"
+          + "proyecto"    = "PINF"
+          + "repositorio" = "git@github.com:hdbarrios/devops-g6-pin-final.git"
+        }
+    }
+
+  # module.eks.aws_iam_policy.custom[0] will be created
+  + resource "aws_iam_policy" "custom" {
+      + arn              = (known after apply)
+      + attachment_count = (known after apply)
+      + id               = (known after apply)
+      + name             = (known after apply)
+      + name_prefix      = "mundos-e-cluster-"
+      + path             = "/"
+      + policy           = jsonencode(
+            {
+              + Statement = [
+                  + {
+                      + Action    = [
+                          + "ec2:RunInstances",
+                          + "ec2:CreateLaunchTemplate",
+                          + "ec2:CreateFleet",
+                        ]
+                      + Condition = {
+                          + StringEquals = {
+                              + "aws:RequestTag/eks:eks-cluster-name" = "${aws:PrincipalTag/eks:eks-cluster-name}"
+                            }
+                          + StringLike   = {
+                              + "aws:RequestTag/eks:kubernetes-node-class-name" = "*"
+                              + "aws:RequestTag/eks:kubernetes-node-pool-name"  = "*"
+                            }
+                        }
+                      + Effect    = "Allow"
+                      + Resource  = "*"
+                      + Sid       = "Compute"
+                    },
+                  + {
+                      + Action    = [
+                          + "ec2:CreateVolume",
+                          + "ec2:CreateSnapshot",
+                        ]
+                      + Condition = {
+                          + StringEquals = {
+                              + "aws:RequestTag/eks:eks-cluster-name" = "${aws:PrincipalTag/eks:eks-cluster-name}"
+                            }
+                        }
+                      + Effect    = "Allow"
+                      + Resource  = [
+                          + "arn:aws:ec2:*:*:volume/*",
+                          + "arn:aws:ec2:*:*:snapshot/*",
+                        ]
+                      + Sid       = "Storage"
+                    },
+                  + {
+                      + Action    = "ec2:CreateNetworkInterface"
+                      + Condition = {
+                          + StringEquals = {
+                              + "aws:RequestTag/eks:eks-cluster-name"         = "${aws:PrincipalTag/eks:eks-cluster-name}"
+                              + "aws:RequestTag/eks:kubernetes-cni-node-name" = "*"
+                            }
+                        }
+                      + Effect    = "Allow"
+                      + Resource  = "*"
+                      + Sid       = "Networking"
+                    },
+                  + {
+                      + Action    = [
+                          + "elasticloadbalancing:CreateTargetGroup",
+                          + "elasticloadbalancing:CreateRule",
+                          + "elasticloadbalancing:CreateLoadBalancer",
+                          + "elasticloadbalancing:CreateListener",
+                          + "ec2:CreateSecurityGroup",
+                        ]
+                      + Condition = {
+                          + StringEquals = {
+                              + "aws:RequestTag/eks:eks-cluster-name" = "${aws:PrincipalTag/eks:eks-cluster-name}"
+                            }
+                        }
+                      + Effect    = "Allow"
+                      + Resource  = "*"
+                      + Sid       = "LoadBalancer"
+                    },
+                  + {
+                      + Action    = "shield:CreateProtection"
+                      + Condition = {
+                          + StringEquals = {
+                              + "aws:RequestTag/eks:eks-cluster-name" = "${aws:PrincipalTag/eks:eks-cluster-name}"
+                            }
+                        }
+                      + Effect    = "Allow"
+                      + Resource  = "*"
+                      + Sid       = "ShieldProtection"
+                    },
+                  + {
+                      + Action    = "shield:TagResource"
+                      + Condition = {
+                          + StringEquals = {
+                              + "aws:RequestTag/eks:eks-cluster-name" = "${aws:PrincipalTag/eks:eks-cluster-name}"
+                            }
+                        }
+                      + Effect    = "Allow"
+                      + Resource  = "arn:aws:shield::*:protection/*"
+                      + Sid       = "ShieldTagResource"
+                    },
+                ]
+              + Version   = "2012-10-17"
+            }
+        )
+      + policy_id        = (known after apply)
+      + tags             = {
+          + "Name"        = "mundos-e"
+          + "environment" = "PRD"
+          + "equipo"      = "Grupo6"
+          + "proyecto"    = "PINF"
+          + "repositorio" = "git@github.com:hdbarrios/devops-g6-pin-final.git"
+        }
+      + tags_all         = {
+          + "Name"        = "mundos-e"
+          + "environment" = "PRD"
+          + "equipo"      = "Grupo6"
+          + "proyecto"    = "PINF"
+          + "repositorio" = "git@github.com:hdbarrios/devops-g6-pin-final.git"
+        }
+    }
+
+  # module.eks.aws_iam_role.this[0] will be created
+  + resource "aws_iam_role" "this" {
+      + arn                   = (known after apply)
+      + assume_role_policy    = jsonencode(
+            {
+              + Statement = [
+                  + {
+                      + Action    = [
+                          + "sts:TagSession",
+                          + "sts:AssumeRole",
+                        ]
+                      + Effect    = "Allow"
+                      + Principal = {
+                          + Service = "eks.amazonaws.com"
+                        }
+                      + Sid       = "EKSClusterAssumeRole"
+                    },
+                ]
+              + Version   = "2012-10-17"
+            }
+        )
+      + create_date           = (known after apply)
+      + force_detach_policies = true
+      + id                    = (known after apply)
+      + managed_policy_arns   = (known after apply)
+      + max_session_duration  = 3600
+      + name                  = (known after apply)
+      + name_prefix           = "mundos-e-cluster-"
+      + path                  = "/"
+      + tags                  = {
+          + "Name"        = "mundos-e"
+          + "environment" = "PRD"
+          + "equipo"      = "Grupo6"
+          + "proyecto"    = "PINF"
+          + "repositorio" = "git@github.com:hdbarrios/devops-g6-pin-final.git"
+        }
+      + tags_all              = {
+          + "Name"        = "mundos-e"
+          + "environment" = "PRD"
+          + "equipo"      = "Grupo6"
+          + "proyecto"    = "PINF"
+          + "repositorio" = "git@github.com:hdbarrios/devops-g6-pin-final.git"
+        }
+      + unique_id             = (known after apply)
+
+      + inline_policy (known after apply)
+    }
+
+  # module.eks.aws_iam_role_policy_attachment.cluster_encryption[0] will be created
+  + resource "aws_iam_role_policy_attachment" "cluster_encryption" {
+      + id         = (known after apply)
+      + policy_arn = (known after apply)
+      + role       = (known after apply)
+    }
+
+  # module.eks.aws_iam_role_policy_attachment.custom[0] will be created
+  + resource "aws_iam_role_policy_attachment" "custom" {
+      + id         = (known after apply)
+      + policy_arn = (known after apply)
+      + role       = (known after apply)
+    }
+
+  # module.eks.aws_iam_role_policy_attachment.this["AmazonEKSClusterPolicy"] will be created
+  + resource "aws_iam_role_policy_attachment" "this" {
+      + id         = (known after apply)
+      + policy_arn = "arn:aws:iam::aws:policy/AmazonEKSClusterPolicy"
+      + role       = (known after apply)
+    }
+
+  # module.eks.aws_iam_role_policy_attachment.this["AmazonEKSVPCResourceController"] will be created
+  + resource "aws_iam_role_policy_attachment" "this" {
+      + id         = (known after apply)
+      + policy_arn = "arn:aws:iam::aws:policy/AmazonEKSVPCResourceController"
+      + role       = (known after apply)
+    }
+
+  # module.eks.aws_security_group.cluster[0] will be created
+  + resource "aws_security_group" "cluster" {
+      + arn                    = (known after apply)
+      + description            = "EKS cluster security group"
+      + egress                 = (known after apply)
+      + id                     = (known after apply)
+      + ingress                = (known after apply)
+      + name                   = (known after apply)
+      + name_prefix            = "mundos-e-cluster-"
+      + owner_id               = (known after apply)
+      + revoke_rules_on_delete = false
+      + tags                   = {
+          + "Name"        = "mundos-e-cluster"
+          + "environment" = "PRD"
+          + "equipo"      = "Grupo6"
+          + "proyecto"    = "PINF"
+          + "repositorio" = "git@github.com:hdbarrios/devops-g6-pin-final.git"
+        }
+      + tags_all               = {
+          + "Name"        = "mundos-e-cluster"
+          + "environment" = "PRD"
+          + "equipo"      = "Grupo6"
+          + "proyecto"    = "PINF"
+          + "repositorio" = "git@github.com:hdbarrios/devops-g6-pin-final.git"
+        }
+      + vpc_id                 = (known after apply)
+    }
+
+  # module.eks.aws_security_group.node[0] will be created
+  + resource "aws_security_group" "node" {
+      + arn                    = (known after apply)
+      + description            = "EKS node shared security group"
+      + egress                 = (known after apply)
+      + id                     = (known after apply)
+      + ingress                = (known after apply)
+      + name                   = (known after apply)
+      + name_prefix            = "mundos-e-node-"
+      + owner_id               = (known after apply)
+      + revoke_rules_on_delete = false
+      + tags                   = {
+          + "Name"                           = "mundos-e-node"
+          + "environment"                    = "PRD"
+          + "equipo"                         = "Grupo6"
+          + "kubernetes.io/cluster/mundos-e" = "owned"
+          + "proyecto"                       = "PINF"
+          + "repositorio"                    = "git@github.com:hdbarrios/devops-g6-pin-final.git"
+        }
+      + tags_all               = {
+          + "Name"                           = "mundos-e-node"
+          + "environment"                    = "PRD"
+          + "equipo"                         = "Grupo6"
+          + "kubernetes.io/cluster/mundos-e" = "owned"
+          + "proyecto"                       = "PINF"
+          + "repositorio"                    = "git@github.com:hdbarrios/devops-g6-pin-final.git"
+        }
+      + vpc_id                 = (known after apply)
+    }
+
+  # module.eks.aws_security_group_rule.cluster["ingress_nodes_443"] will be created
+  + resource "aws_security_group_rule" "cluster" {
+      + description              = "Node groups to cluster API"
+      + from_port                = 443
+      + id                       = (known after apply)
+      + protocol                 = "tcp"
+      + security_group_id        = (known after apply)
+      + security_group_rule_id   = (known after apply)
+      + self                     = false
+      + source_security_group_id = (known after apply)
+      + to_port                  = 443
+      + type                     = "ingress"
+    }
+
+  # module.eks.aws_security_group_rule.node["egress_all"] will be created
+  + resource "aws_security_group_rule" "node" {
+      + cidr_blocks              = [
+          + "0.0.0.0/0",
+        ]
+      + description              = "Allow all egress"
+      + from_port                = 0
+      + id                       = (known after apply)
+      + prefix_list_ids          = []
+      + protocol                 = "-1"
+      + security_group_id        = (known after apply)
+      + security_group_rule_id   = (known after apply)
+      + self                     = false
+      + source_security_group_id = (known after apply)
+      + to_port                  = 0
+      + type                     = "egress"
+    }
+
+  # module.eks.aws_security_group_rule.node["ingress_cluster_443"] will be created
+  + resource "aws_security_group_rule" "node" {
+      + description              = "Cluster API to node groups"
+      + from_port                = 443
+      + id                       = (known after apply)
+      + prefix_list_ids          = []
+      + protocol                 = "tcp"
+      + security_group_id        = (known after apply)
+      + security_group_rule_id   = (known after apply)
+      + self                     = false
+      + source_security_group_id = (known after apply)
+      + to_port                  = 443
+      + type                     = "ingress"
+    }
+
+  # module.eks.aws_security_group_rule.node["ingress_cluster_4443_webhook"] will be created
+  + resource "aws_security_group_rule" "node" {
+      + description              = "Cluster API to node 4443/tcp webhook"
+      + from_port                = 4443
+      + id                       = (known after apply)
+      + prefix_list_ids          = []
+      + protocol                 = "tcp"
+      + security_group_id        = (known after apply)
+      + security_group_rule_id   = (known after apply)
+      + self                     = false
+      + source_security_group_id = (known after apply)
+      + to_port                  = 4443
+      + type                     = "ingress"
+    }
+
+  # module.eks.aws_security_group_rule.node["ingress_cluster_6443_webhook"] will be created
+  + resource "aws_security_group_rule" "node" {
+      + description              = "Cluster API to node 6443/tcp webhook"
+      + from_port                = 6443
+      + id                       = (known after apply)
+      + prefix_list_ids          = []
+      + protocol                 = "tcp"
+      + security_group_id        = (known after apply)
+      + security_group_rule_id   = (known after apply)
+      + self                     = false
+      + source_security_group_id = (known after apply)
+      + to_port                  = 6443
+      + type                     = "ingress"
+    }
+
+  # module.eks.aws_security_group_rule.node["ingress_cluster_8443_webhook"] will be created
+  + resource "aws_security_group_rule" "node" {
+      + description              = "Cluster API to node 8443/tcp webhook"
+      + from_port                = 8443
+      + id                       = (known after apply)
+      + prefix_list_ids          = []
+      + protocol                 = "tcp"
+      + security_group_id        = (known after apply)
+      + security_group_rule_id   = (known after apply)
+      + self                     = false
+      + source_security_group_id = (known after apply)
+      + to_port                  = 8443
+      + type                     = "ingress"
+    }
+
+  # module.eks.aws_security_group_rule.node["ingress_cluster_9443_webhook"] will be created
+  + resource "aws_security_group_rule" "node" {
+      + description              = "Cluster API to node 9443/tcp webhook"
+      + from_port                = 9443
+      + id                       = (known after apply)
+      + prefix_list_ids          = []
+      + protocol                 = "tcp"
+      + security_group_id        = (known after apply)
+      + security_group_rule_id   = (known after apply)
+      + self                     = false
+      + source_security_group_id = (known after apply)
+      + to_port                  = 9443
+      + type                     = "ingress"
+    }
+
+  # module.eks.aws_security_group_rule.node["ingress_cluster_kubelet"] will be created
+  + resource "aws_security_group_rule" "node" {
+      + description              = "Cluster API to node kubelets"
+      + from_port                = 10250
+      + id                       = (known after apply)
+      + prefix_list_ids          = []
+      + protocol                 = "tcp"
+      + security_group_id        = (known after apply)
+      + security_group_rule_id   = (known after apply)
+      + self                     = false
+      + source_security_group_id = (known after apply)
+      + to_port                  = 10250
+      + type                     = "ingress"
+    }
+
+  # module.eks.aws_security_group_rule.node["ingress_ec2_all"] will be created
+  + resource "aws_security_group_rule" "node" {
+      + cidr_blocks              = [
+          + "10.11.0.0/16",
+        ]
+      + description              = "Allow all traffic from EC2 instance"
+      + from_port                = 0
+      + id                       = (known after apply)
+      + prefix_list_ids          = []
+      + protocol                 = "-1"
+      + security_group_id        = (known after apply)
+      + security_group_rule_id   = (known after apply)
+      + self                     = false
+      + source_security_group_id = (known after apply)
+      + to_port                  = 0
+      + type                     = "ingress"
+    }
+
+  # module.eks.aws_security_group_rule.node["ingress_nodes_ephemeral"] will be created
+  + resource "aws_security_group_rule" "node" {
+      + description              = "Node to node ingress on ephemeral ports"
+      + from_port                = 1025
+      + id                       = (known after apply)
+      + prefix_list_ids          = []
+      + protocol                 = "tcp"
+      + security_group_id        = (known after apply)
+      + security_group_rule_id   = (known after apply)
+      + self                     = true
+      + source_security_group_id = (known after apply)
+      + to_port                  = 65535
+      + type                     = "ingress"
+    }
+
+  # module.eks.aws_security_group_rule.node["ingress_self_coredns_tcp"] will be created
+  + resource "aws_security_group_rule" "node" {
+      + description              = "Node to node CoreDNS"
+      + from_port                = 53
+      + id                       = (known after apply)
+      + prefix_list_ids          = []
+      + protocol                 = "tcp"
+      + security_group_id        = (known after apply)
+      + security_group_rule_id   = (known after apply)
+      + self                     = true
+      + source_security_group_id = (known after apply)
+      + to_port                  = 53
+      + type                     = "ingress"
+    }
+
+  # module.eks.aws_security_group_rule.node["ingress_self_coredns_udp"] will be created
+  + resource "aws_security_group_rule" "node" {
+      + description              = "Node to node CoreDNS UDP"
+      + from_port                = 53
+      + id                       = (known after apply)
+      + prefix_list_ids          = []
+      + protocol                 = "udp"
+      + security_group_id        = (known after apply)
+      + security_group_rule_id   = (known after apply)
+      + self                     = true
+      + source_security_group_id = (known after apply)
+      + to_port                  = 53
+      + type                     = "ingress"
+    }
+
+  # module.eks.time_sleep.this[0] will be created
+  + resource "time_sleep" "this" {
+      + create_duration = "30s"
+      + id              = (known after apply)
+      + triggers        = {
+          + "cluster_certificate_authority_data" = (known after apply)
+          + "cluster_endpoint"                   = (known after apply)
+          + "cluster_name"                       = (known after apply)
+          + "cluster_service_cidr"               = (known after apply)
+          + "cluster_version"                    = "1.30"
+        }
+    }
+
+  # module.eks.module.eks_managed_node_group["main_node_group"].aws_eks_node_group.this[0] will be created
+  + resource "aws_eks_node_group" "this" {
+      + ami_type               = "AL2_x86_64"
+      + arn                    = (known after apply)
+      + capacity_type          = "ON_DEMAND"
+      + cluster_name           = (known after apply)
+      + disk_size              = (known after apply)
+      + force_update_version   = true
+      + id                     = (known after apply)
+      + instance_types         = [
+          + "t3.small",
+        ]
+      + node_group_name        = (known after apply)
+      + node_group_name_prefix = "ng-mundos-e-"
+      + node_role_arn          = (known after apply)
+      + release_version        = (known after apply)
+      + resources              = (known after apply)
+      + status                 = (known after apply)
+      + subnet_ids             = (known after apply)
+      + tags                   = {
+          + "Name"        = "ng-mundos-e"
+          + "environment" = "PRD"
+          + "equipo"      = "Grupo6"
+          + "proyecto"    = "PINF"
+          + "repositorio" = "git@github.com:hdbarrios/devops-g6-pin-final.git"
+        }
+      + tags_all               = {
+          + "Name"        = "ng-mundos-e"
+          + "environment" = "PRD"
+          + "equipo"      = "Grupo6"
+          + "proyecto"    = "PINF"
+          + "repositorio" = "git@github.com:hdbarrios/devops-g6-pin-final.git"
+        }
+      + version                = "1.30"
+
+      + launch_template {
+          + id      = (known after apply)
+          + name    = (known after apply)
+          + version = (known after apply)
+        }
+
+      + node_repair_config (known after apply)
+
+      + scaling_config {
+          + desired_size = 3
+          + max_size     = 3
+          + min_size     = 2
+        }
+
+      + timeouts {}
+
+      + update_config {
+          + max_unavailable_percentage = 33
+        }
+    }
+
+  # module.eks.module.eks_managed_node_group["main_node_group"].aws_iam_role.this[0] will be created
+  + resource "aws_iam_role" "this" {
+      + arn                   = (known after apply)
+      + assume_role_policy    = jsonencode(
+            {
+              + Statement = [
+                  + {
+                      + Action    = "sts:AssumeRole"
+                      + Effect    = "Allow"
+                      + Principal = {
+                          + Service = "ec2.amazonaws.com"
+                        }
+                      + Sid       = "EKSNodeAssumeRole"
+                    },
+                ]
+              + Version   = "2012-10-17"
+            }
+        )
+      + create_date           = (known after apply)
+      + description           = "EKS managed node group IAM role"
+      + force_detach_policies = true
+      + id                    = (known after apply)
+      + managed_policy_arns   = (known after apply)
+      + max_session_duration  = 3600
+      + name                  = (known after apply)
+      + name_prefix           = "ng-mundos-e-eks-node-group-"
+      + path                  = "/"
+      + tags                  = {
+          + "Name"        = "ng-mundos-e"
+          + "environment" = "PRD"
+          + "equipo"      = "Grupo6"
+          + "proyecto"    = "PINF"
+          + "repositorio" = "git@github.com:hdbarrios/devops-g6-pin-final.git"
+        }
+      + tags_all              = {
+          + "Name"        = "ng-mundos-e"
+          + "environment" = "PRD"
+          + "equipo"      = "Grupo6"
+          + "proyecto"    = "PINF"
+          + "repositorio" = "git@github.com:hdbarrios/devops-g6-pin-final.git"
+        }
+      + unique_id             = (known after apply)
+
+      + inline_policy (known after apply)
+    }
+
+  # module.eks.module.eks_managed_node_group["main_node_group"].aws_iam_role_policy_attachment.additional["ebs_management"] will be created
+  + resource "aws_iam_role_policy_attachment" "additional" {
+      + id         = (known after apply)
+      + policy_arn = (known after apply)
+      + role       = (known after apply)
+    }
+
+  # module.eks.module.eks_managed_node_group["main_node_group"].aws_iam_role_policy_attachment.this["AmazonEC2ContainerRegistryReadOnly"] will be created
+  + resource "aws_iam_role_policy_attachment" "this" {
+      + id         = (known after apply)
+      + policy_arn = "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"
+      + role       = (known after apply)
+    }
+
+  # module.eks.module.eks_managed_node_group["main_node_group"].aws_iam_role_policy_attachment.this["AmazonEKSWorkerNodePolicy"] will be created
+  + resource "aws_iam_role_policy_attachment" "this" {
+      + id         = (known after apply)
+      + policy_arn = "arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy"
+      + role       = (known after apply)
+    }
+
+  # module.eks.module.eks_managed_node_group["main_node_group"].aws_iam_role_policy_attachment.this["AmazonEKS_CNI_Policy"] will be created
+  + resource "aws_iam_role_policy_attachment" "this" {
+      + id         = (known after apply)
+      + policy_arn = "arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy"
+      + role       = (known after apply)
+    }
+
+  # module.eks.module.eks_managed_node_group["main_node_group"].aws_launch_template.this[0] will be created
+  + resource "aws_launch_template" "this" {
+      + arn                    = (known after apply)
+      + default_version        = (known after apply)
+      + description            = "Custom launch template for ng-mundos-e EKS managed node group"
+      + id                     = (known after apply)
+      + key_name               = "pin"
+      + latest_version         = (known after apply)
+      + name                   = (known after apply)
+      + name_prefix            = "main_node_group-"
+      + tags                   = {
+          + "Name"        = "ng-mundos-e"
+          + "environment" = "PRD"
+          + "equipo"      = "Grupo6"
+          + "proyecto"    = "PINF"
+          + "repositorio" = "git@github.com:hdbarrios/devops-g6-pin-final.git"
+        }
+      + tags_all               = {
+          + "Name"        = "ng-mundos-e"
+          + "environment" = "PRD"
+          + "equipo"      = "Grupo6"
+          + "proyecto"    = "PINF"
+          + "repositorio" = "git@github.com:hdbarrios/devops-g6-pin-final.git"
+        }
+      + update_default_version = true
+      + vpc_security_group_ids = (known after apply)
+        # (2 unchanged attributes hidden)
+
+      + metadata_options {
+          + http_endpoint               = "enabled"
+          + http_protocol_ipv6          = (known after apply)
+          + http_put_response_hop_limit = 2
+          + http_tokens                 = "required"
+          + instance_metadata_tags      = (known after apply)
+        }
+
+      + monitoring {
+          + enabled = true
+        }
+
+      + tag_specifications {
+          + resource_type = "instance"
+          + tags          = {
+              + "Name"        = "ng-mundos-e"
+              + "environment" = "PRD"
+              + "equipo"      = "Grupo6"
+              + "proyecto"    = "PINF"
+              + "repositorio" = "git@github.com:hdbarrios/devops-g6-pin-final.git"
+            }
+        }
+      + tag_specifications {
+          + resource_type = "network-interface"
+          + tags          = {
+              + "Name"        = "ng-mundos-e"
+              + "environment" = "PRD"
+              + "equipo"      = "Grupo6"
+              + "proyecto"    = "PINF"
+              + "repositorio" = "git@github.com:hdbarrios/devops-g6-pin-final.git"
+            }
+        }
+      + tag_specifications {
+          + resource_type = "volume"
+          + tags          = {
+              + "Name"        = "ng-mundos-e"
+              + "environment" = "PRD"
+              + "equipo"      = "Grupo6"
+              + "proyecto"    = "PINF"
+              + "repositorio" = "git@github.com:hdbarrios/devops-g6-pin-final.git"
+            }
+        }
+    }
+
+  # module.eks.module.kms.data.aws_iam_policy_document.this[0] will be read during apply
+  # (config refers to values not yet known)
+ <= data "aws_iam_policy_document" "this" {
+      + id                        = (known after apply)
+      + json                      = (known after apply)
+      + minified_json             = (known after apply)
+      + override_policy_documents = []
+      + source_policy_documents   = []
+
+      + statement {
+          + actions   = [
+              + "kms:*",
+            ]
+          + resources = [
+              + "*",
+            ]
+          + sid       = "Default"
+
+          + principals {
+              + identifiers = [
+                  + "arn:aws:iam::536697232168:root",
+                ]
+              + type        = "AWS"
+            }
+        }
+      + statement {
+          + actions   = [
+              + "kms:CancelKeyDeletion",
+              + "kms:Create*",
+              + "kms:Delete*",
+              + "kms:Describe*",
+              + "kms:Disable*",
+              + "kms:Enable*",
+              + "kms:Get*",
+              + "kms:ImportKeyMaterial",
+              + "kms:List*",
+              + "kms:Put*",
+              + "kms:ReplicateKey",
+              + "kms:Revoke*",
+              + "kms:ScheduleKeyDeletion",
+              + "kms:TagResource",
+              + "kms:UntagResource",
+              + "kms:Update*",
+            ]
+          + resources = [
+              + "*",
+            ]
+          + sid       = "KeyAdministration"
+
+          + principals {
+              + identifiers = [
+                  + "arn:aws:iam::536697232168:user/pin-f",
+                ]
+              + type        = "AWS"
+            }
+        }
+      + statement {
+          + actions   = [
+              + "kms:Decrypt",
+              + "kms:DescribeKey",
+              + "kms:Encrypt",
+              + "kms:GenerateDataKey*",
+              + "kms:ReEncrypt*",
+            ]
+          + resources = [
+              + "*",
+            ]
+          + sid       = "KeyUsage"
+
+          + principals {
+              + identifiers = [
+                  + (known after apply),
+                ]
+              + type        = "AWS"
+            }
+        }
+    }
+
+  # module.eks.module.kms.aws_kms_alias.this["cluster"] will be created
+  + resource "aws_kms_alias" "this" {
+      + arn            = (known after apply)
+      + id             = (known after apply)
+      + name           = "alias/eks/mundos-e"
+      + name_prefix    = (known after apply)
+      + target_key_arn = (known after apply)
+      + target_key_id  = (known after apply)
+    }
+
+  # module.eks.module.kms.aws_kms_key.this[0] will be created
+  + resource "aws_kms_key" "this" {
+      + arn                                = (known after apply)
+      + bypass_policy_lockout_safety_check = false
+      + customer_master_key_spec           = "SYMMETRIC_DEFAULT"
+      + description                        = "mundos-e cluster encryption key"
+      + enable_key_rotation                = true
+      + id                                 = (known after apply)
+      + is_enabled                         = true
+      + key_id                             = (known after apply)
+      + key_usage                          = "ENCRYPT_DECRYPT"
+      + multi_region                       = false
+      + policy                             = (known after apply)
+      + rotation_period_in_days            = (known after apply)
+      + tags                               = {
+          + "Name"                  = "mundos-e"
+          + "environment"           = "PRD"
+          + "equipo"                = "Grupo6"
+          + "proyecto"              = "PINF"
+          + "repositorio"           = "git@github.com:hdbarrios/devops-g6-pin-final.git"
+          + "terraform-aws-modules" = "eks"
+        }
+      + tags_all                           = {
+          + "Name"                  = "mundos-e"
+          + "environment"           = "PRD"
+          + "equipo"                = "Grupo6"
+          + "proyecto"              = "PINF"
+          + "repositorio"           = "git@github.com:hdbarrios/devops-g6-pin-final.git"
+          + "terraform-aws-modules" = "eks"
+        }
+    }
+
+  # module.eks.module.eks_managed_node_group["main_node_group"].module.user_data.null_resource.validate_cluster_service_cidr will be created
+  + resource "null_resource" "validate_cluster_service_cidr" {
+      + id = (known after apply)
+    }
+
+Plan: 95 to add, 0 to change, 0 to destroy.
+
+Changes to Outputs:
+  + account_id                             = "536697232168"
+  + eks_access_entries                     = {
+      + admin_role        = {
+          + access_entry_arn  = (known after apply)
+          + cluster_name      = (known after apply)
+          + created_at        = (known after apply)
+          + id                = (known after apply)
+          + kubernetes_groups = (known after apply)
+          + modified_at       = (known after apply)
+          + principal_arn     = (known after apply)
+          + tags              = {
+              + Name        = "mundos-e"
+              + environment = "PRD"
+              + equipo      = "Grupo6"
+              + proyecto    = "PINF"
+              + repositorio = "git@github.com:hdbarrios/devops-g6-pin-final.git"
+            }
+          + tags_all          = {
+              + Name        = "mundos-e"
+              + environment = "PRD"
+              + equipo      = "Grupo6"
+              + proyecto    = "PINF"
+              + repositorio = "git@github.com:hdbarrios/devops-g6-pin-final.git"
+            }
+          + timeouts          = null
+          + type              = "STANDARD"
+          + user_name         = (known after apply)
+        }
+      + cluster_creator   = {
+          + access_entry_arn  = (known after apply)
+          + cluster_name      = (known after apply)
+          + created_at        = (known after apply)
+          + id                = (known after apply)
+          + kubernetes_groups = (known after apply)
+          + modified_at       = (known after apply)
+          + principal_arn     = "arn:aws:iam::536697232168:user/pin-f"
+          + tags              = {
+              + Name        = "mundos-e"
+              + environment = "PRD"
+              + equipo      = "Grupo6"
+              + proyecto    = "PINF"
+              + repositorio = "git@github.com:hdbarrios/devops-g6-pin-final.git"
+            }
+          + tags_all          = {
+              + Name        = "mundos-e"
+              + environment = "PRD"
+              + equipo      = "Grupo6"
+              + proyecto    = "PINF"
+              + repositorio = "git@github.com:hdbarrios/devops-g6-pin-final.git"
+            }
+          + timeouts          = null
+          + type              = "STANDARD"
+          + user_name         = (known after apply)
+        }
+      + programmatic_user = {
+          + access_entry_arn  = (known after apply)
+          + cluster_name      = (known after apply)
+          + created_at        = (known after apply)
+          + id                = (known after apply)
+          + kubernetes_groups = (known after apply)
+          + modified_at       = (known after apply)
+          + principal_arn     = "arn:aws:iam::536697232168:user/ec2_admin_role_cicd"
+          + tags              = {
+              + Name        = "mundos-e"
+              + environment = "PRD"
+              + equipo      = "Grupo6"
+              + proyecto    = "PINF"
+              + repositorio = "git@github.com:hdbarrios/devops-g6-pin-final.git"
+            }
+          + tags_all          = {
+              + Name        = "mundos-e"
+              + environment = "PRD"
+              + equipo      = "Grupo6"
+              + proyecto    = "PINF"
+              + repositorio = "git@github.com:hdbarrios/devops-g6-pin-final.git"
+            }
+          + timeouts          = null
+          + type              = "STANDARD"
+          + user_name         = (known after apply)
+        }
+    }
+  + eks_cluster_certificate_authority_data = (known after apply)
+  + eks_cluster_endpoint                   = (known after apply)
+  + eks_cluster_name                       = "mundos-e"
+  + instance_id                            = (known after apply)
+  + instance_ip                            = (known after apply)
+  + instance_key_name                      = "pin"
+  + instance_private_dns                   = (known after apply)
+  + instance_private_ip                    = (known after apply)
+  + instance_public_dns                    = (known after apply)
+  + instance_state                         = (known after apply)
+  + instance_type                          = "t2.micro"
+  + internet_gateway_id                    = (known after apply)
+  + programmatic_user_access_key           = (sensitive value)
+  + programmatic_user_name                 = "ec2_admin_role_cicd"
+  + route_table_id                         = (known after apply)
+  + security_group_id                      = (known after apply)
+  + subnet_id                              = (known after apply)
+  + vpc_id                                 = (known after apply)
+
+─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+Saved the plan to: tfplan
+
+To perform exactly these actions, run the following command to apply:
+    terraform apply "tfplan"
+hbarrios@nubiral: ~/workspace/space/repos/hdbarrios/devops-g6-pinFinal 16:35:43 (test dc42e15) $ 
+
