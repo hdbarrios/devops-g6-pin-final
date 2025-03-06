@@ -1845,7 +1845,7 @@ dashboards:
           "editable": true,
           "fiscalYearStartMonth": 0,
           "graphTooltip": 1,
-          "id": 2,
+          "id": 8,
           "links": [
             {
               "asDropdown": true,
@@ -1876,7 +1876,7 @@ dashboards:
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "-- Grafana --"
+                "uid": "PBFA97CFB590B2093"
               },
               "fieldConfig": {
                 "defaults": {
@@ -1945,7 +1945,7 @@ dashboards:
                 {
                   "datasource": {
                     "type": "prometheus",
-                    "uid": "-- Grafana --"
+                    "uid": "PBFA97CFB590B2093"
                   },
                   "expr": "sum(kube_pod_info{node=~\"$node\"}) / sum(kube_node_status_allocatable_pods{node=~\"$node\"}) * 100",
                   "instant": false,
@@ -1959,7 +1959,7 @@ dashboards:
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "-- Grafana --"
+                "uid": "PBFA97CFB590B2093"
               },
               "fieldConfig": {
                 "defaults": {
@@ -2028,7 +2028,7 @@ dashboards:
                 {
                   "datasource": {
                     "type": "prometheus",
-                    "uid": "-- Grafana --"
+                    "uid": "PBFA97CFB590B2093"
                   },
                   "expr": "sum(rate(container_cpu_usage_seconds_total{namespace=~\"$namespace\"}[1m])) / sum(kube_node_status_allocatable_cpu_cores{node=~\"$node\"}) * 100",
                   "instant": false,
@@ -2772,9 +2772,7 @@ dashboards:
                               "color": "rgba(50, 172, 45, 0.97)",
                               "value": 0
                             },
-                            {
-                              "value": null
-                            }
+                            {}
                           ]
                         }
                       }
@@ -3523,8 +3521,7 @@ dashboards:
                     "mode": "absolute",
                     "steps": [
                       {
-                        "color": "green",
-                        "value": null
+                        "color": "green"
                       },
                       {
                         "color": "red",
@@ -3589,8 +3586,7 @@ dashboards:
                     "mode": "absolute",
                     "steps": [
                       {
-                        "color": "green",
-                        "value": null
+                        "color": "green"
                       },
                       {
                         "color": "red",
@@ -3655,8 +3651,7 @@ dashboards:
                     "mode": "absolute",
                     "steps": [
                       {
-                        "color": "green",
-                        "value": null
+                        "color": "green"
                       },
                       {
                         "color": "red",
@@ -3734,8 +3729,7 @@ dashboards:
                     "mode": "absolute",
                     "steps": [
                       {
-                        "color": "green",
-                        "value": null
+                        "color": "green"
                       },
                       {
                         "color": "red",
@@ -3799,8 +3793,7 @@ dashboards:
                     "mode": "absolute",
                     "steps": [
                       {
-                        "color": "green",
-                        "value": null
+                        "color": "green"
                       },
                       {
                         "color": "red",
@@ -3864,8 +3857,7 @@ dashboards:
                     "mode": "absolute",
                     "steps": [
                       {
-                        "color": "green",
-                        "value": null
+                        "color": "green"
                       },
                       {
                         "color": "red",
@@ -3929,8 +3921,7 @@ dashboards:
                     "mode": "absolute",
                     "steps": [
                       {
-                        "color": "green",
-                        "value": null
+                        "color": "green"
                       },
                       {
                         "color": "red",
@@ -3994,8 +3985,7 @@ dashboards:
                     "mode": "absolute",
                     "steps": [
                       {
-                        "color": "green",
-                        "value": null
+                        "color": "green"
                       },
                       {
                         "color": "red",
@@ -4059,8 +4049,7 @@ dashboards:
                     "mode": "absolute",
                     "steps": [
                       {
-                        "color": "green",
-                        "value": null
+                        "color": "green"
                       },
                       {
                         "color": "red",
@@ -4137,8 +4126,7 @@ dashboards:
                     "mode": "absolute",
                     "steps": [
                       {
-                        "color": "green",
-                        "value": null
+                        "color": "green"
                       },
                       {
                         "color": "red",
@@ -4202,8 +4190,7 @@ dashboards:
                     "mode": "absolute",
                     "steps": [
                       {
-                        "color": "green",
-                        "value": null
+                        "color": "green"
                       },
                       {
                         "color": "red",
@@ -4267,8 +4254,7 @@ dashboards:
                     "mode": "absolute",
                     "steps": [
                       {
-                        "color": "green",
-                        "value": null
+                        "color": "green"
                       },
                       {
                         "color": "red",
@@ -4372,7 +4358,7 @@ dashboards:
                     "value": ".*"
                   }
                 ],
-                "query": "grafana",
+                "query": ".*",
                 "type": "textbox"
               }
             ]
@@ -4383,9 +4369,9 @@ dashboards:
           },
           "timepicker": {},
           "timezone": "browser",
-          "title": "Kubernetes Cluster (Prometheus)",
-          "uid": "4XuMd2Iiz",
-          "version": 2,
+          "title": "Kubernetes Cluster (Prometheus)23",
+          "uid": "4XuMd2Iiz23",
+          "version": 1,
           "weekStart": ""
         }
 
