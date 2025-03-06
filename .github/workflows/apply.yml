@@ -64,41 +64,45 @@ jobs:
     - name: Terraform plan
       if: github.event_name == 'pull_request' || github.event_name == 'push'
       run: |
+       pwd
+       ls -ltra
        terraform plan -var-file=profiles/pinf.tfvars 
 
     - name: Terraform apply
       if: github.event_name == 'push'  # Solo en push a master (es decir, cuando el PR se mergea)
       run: |
+       pwd
+       ls -ltra
         terraform apply -var-file=profiles/pinf.tfvars -auto-approve -input=false
 
     - name: validation
       run: |
-        pwd
-        ls -ltra
-        echo "Verificando el cluster EKS..."
-        kubectl get nodes -o wide
-        
-        helm repo add bitnami https://charts.bitnami.com/bitnami
-        helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
-        helm repo add grafana https://grafana.github.io/helm-charts
-        helm repo update
-        
-        helm upgrade --install nginx-webserver --values profiles/nginx-values.yaml oci://registry-1.docker.io/bitnamicharts/nginx --namespace mundose --create-namespace
-        
-        kubectl -n mundose get pods
-        kubectl -n mundose get svc
-        
-        
-        helm install prometheus prometheus-community/prometheus \
-          --namespace prometheus \
-          --create-namespace \
-          --values profiles/prometheus-values.yaml
-        
-        helm install grafana grafana/grafana \
-          --namespace grafana \
-          --create-namespace \
-          --values profiles/grafana-values.yaml
-        
-        kubectl get svc -n grafana
-        kubectl get svc -n prometheus
-        kubectl get svc -n mundose
+       pwd
+       ls -ltra
+       echo "Verificando el cluster EKS..."
+       kubectl get nodes -o wide
+       
+       helm repo add bitnami https://charts.bitnami.com/bitnami
+       helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+       helm repo add grafana https://grafana.github.io/helm-charts
+       helm repo update
+       
+       helm upgrade --install nginx-webserver --values profiles/nginx-values.yaml oci://registry-1.docker.io/bitnamicharts/nginx --namespace mundose --create-namespace
+       
+       kubectl -n mundose get pods
+       kubectl -n mundose get svc
+       
+       
+       helm install prometheus prometheus-community/prometheus \
+         --namespace prometheus \
+         --create-namespace \
+         --values profiles/prometheus-values.yaml
+       
+       helm install grafana grafana/grafana \
+         --namespace grafana \
+         --create-namespace \
+         --values profiles/grafana-values.yaml
+       
+       kubectl get svc -n grafana
+       kubectl get svc -n prometheus
+       kubectl get svc -n mundose
