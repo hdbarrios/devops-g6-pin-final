@@ -91,7 +91,6 @@ jobs:
 
     - name: Verificando el cluster EKS
       run: |
-       #set -e  # Hace que el script falle si algun comando falla.
        aws eks update-kubeconfig --name mundos-e --region us-east-1
        aws ec2 describe-instances --query "Reservations[*].Instances[*].[InstanceId, InstanceType, State.Name, PublicIpAddress, PrivateIpAddress]" --output table
        aws eks describe-cluster --name mundos-e --region us-east-1 --query "cluster.accessConfig"
@@ -121,7 +120,7 @@ jobs:
          --create-namespace \
          --values profiles/prometheus-values.yaml
        
-      echo "Install Grafana"
+       echo "Install Grafana"
        helm upgrade --install grafana grafana/grafana \
          --namespace grafana \
          --create-namespace \
@@ -133,20 +132,19 @@ jobs:
        kubectl get svc -n mundose
        kubectl get svc -n grafana
        kubectl get svc -n prometheus
-   
+     
     - name: Port-forward prometheus-service
       run: |
-        # Obtener la IP pública del runner
-        RUNNER_IP=$(curl -s ifconfig.me)
-        echo "Puedes acceder a Prometheus en: http://$RUNNER_IP:8080"
+       RUNNER_IP=$(curl -s ifconfig.me)
+       echo "Puedes acceder a Prometheus en: http://$RUNNER_IP:8080"
 
-        # Ejecutar el port-forward en segundo plano
-        kubectl port-forward svc/prometheus-service -n prometheus 8080:9090 --address 0.0.0.0 &
-        PORT_FORWARD_PID=$!  # Capturar el PID del proceso en segundo plano
+       # Ejecutar el port-forward en segundo plano
+       kubectl port-forward svc/prometheus-service -n prometheus 8080:9090 --address 0.0.0.0 &
+       PORT_FORWARD_PID=$!  # Capturar el PID del proceso en segundo plano
       
-        # Esperar 1 minutos (60 segundos)
-        sleep 60
+       # Esperar 1 minutos (60 segundos)
+       sleep 60
       
-        # Detener el port-forward después de 5 minutos
-        kill $PORT_FORWARD_PID
-        echo "Port-forward detenido después de 5 minutos."
+       # Detener el port-forward después de 5 minutos
+       kill $PORT_FORWARD_PID
+       echo "Port-forward detenido después de 5 minutos."
