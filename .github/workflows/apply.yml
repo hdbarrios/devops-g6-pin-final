@@ -55,7 +55,8 @@ jobs:
       if: github.event_name == 'push'  # Solo en push a master (es decir, cuando el PR se mergea)
       run: |
        terraform apply -var-file=profiles/pinf.tfvars -auto-approve -input=false
-  Validacion_Infra:
+       
+  validacion_infra:
     runs-on: ubuntu-latest
     needs: terraform_apply  # Este job depende del éxito del job "terraform_apply"
     if: github.event_name == 'push'  # Este job solo se ejecuta en eventos de push
