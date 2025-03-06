@@ -9,7 +9,6 @@ on:
   workflow_dispatch:
     branches:
       - master
-      - test
 
 jobs:
   terraform_apply:

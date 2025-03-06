@@ -169,6 +169,23 @@ helm install grafana grafana/grafana \
 kubectl get pods -n monitoring
 kubectl get svc -n monitoring
 kubectl get svc -n mundose
+
+kubectl get pv
+
+RUNNER_IP=$(curl -s ifconfig.me)
+echo "Puedes acceder a Prometheus en: http://$RUNNER_IP:8080"
+
+# Ejecutar el port-forward en segundo plano
+kubectl port-forward -n prometheus deploy/prometheus-server 8080:9090 --address 0.0.0.0 &
+PORT_FORWARD_PID=$!  # Capturar el PID del proceso en segundo plano
+
+# Esperar 1 minutos (60 segundos)
+sleep 60
+
+# Detener el port-forward después de 5 minutos
+kill $PORT_FORWARD_PID
+echo "Port-forward detenido después de 5 minutos."
+
 EOFILE
 
 chown -R ${EC2_USER}:${EC2_USER} /home/${EC2_USER}/
