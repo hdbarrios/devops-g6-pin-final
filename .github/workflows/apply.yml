@@ -54,24 +54,20 @@ jobs:
       run: terraform version
 
     - name: Terraform init
-      working-directory: terraform-pinf
       run: |
         terraform init -input=false
 
     - name: Terraform validation
-      working-directory: terraform-pinf
       run: |
         terraform validate
 
     - name: Terraform plan
       if: github.event_name == 'pull_request' || github.event_name == 'push'
-      working-directory: terraform-pinf
       run: |
        terraform plan -var-file=profiles/pinf.tfvars 
 
     - name: Terraform apply
       if: github.event_name == 'push'  # Solo en push a master (es decir, cuando el PR se mergea)
-      working-directory: terraform-pinf
       run: |
         terraform apply -var-file=profiles/pinf.tfvars -auto-approve -input=false
 
