@@ -83,7 +83,7 @@ jobs:
 
     - name: Verificando el cluster EKS
       run: |
-
+       set -e  # Hace que el script falle si algun comando falla.
        aws eks update-kubeconfig --name mundos-e --region us-east-1
        aws ec2 describe-instances --query "Reservations[*].Instances[*].[InstanceId, InstanceType, State.Name, PublicIpAddress, PrivateIpAddress]" --output table
        aws eks describe-cluster --name mundos-e --region us-east-1 --query "cluster.accessConfig"
