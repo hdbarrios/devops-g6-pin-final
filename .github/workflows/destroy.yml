@@ -20,6 +20,48 @@ jobs:
          submodules: true
          fetch-depth: 1
 
+    - name: Destroy Namespaces
+      run: |
+       # Instalar AWS CLI
+       curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+       unzip awscliv2.zip
+       sudo ./aws/install --update
+  
+       # Verificar si el clúster de EKS existe
+       if aws eks describe-cluster --name mundos-e --region us-east-1 > /dev/null 2>&1; then
+         echo "El clúster EKS 'mundos-e' existe. Actualizando kubeconfig..."
+         aws eks update-kubeconfig --name mundos-e --region us-east-1
+  
+         # Verificar si los namespaces existen antes de eliminarlos
+         echo "Verificando namespaces..."
+         if kubectl get namespace mundose > /dev/null 2>&1; then
+           echo "Eliminando namespace 'mundose'..."
+           kubectl delete namespace mundose --force
+         else
+           echo "El namespace 'mundose' no existe."
+         fi
+  
+         if kubectl get namespace grafana > /dev/null 2>&1; then
+           echo "Eliminando namespace 'grafana'..."
+           kubectl delete namespace grafana --force
+         else
+           echo "El namespace 'grafana' no existe."
+         fi
+  
+         if kubectl get namespace prometheus > /dev/null 2>&1; then
+           echo "Eliminando namespace 'prometheus'..."
+           kubectl delete namespace prometheus --force
+         else
+           echo "El namespace 'prometheus' no existe."
+         fi
+  
+         # Mostrar información de los nodos (opcional, solo para depuración)
+         echo "EKS Nodes:"
+         kubectl get nodes -o wide
+       else
+         echo "El clúster EKS 'mundos-e' no existe. No se requiere ninguna acción."
+       fi
+
     - name: Install Terraform
       run: |
         tf_version=$TERRAFORM_VERSION
