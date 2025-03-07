@@ -29,21 +29,22 @@ jobs:
 
     - name: Install Terraform
       run: |
-        tf_version=$TERRAFORM_VERSION
-        wget https://releases.hashicorp.com/terraform/"$tf_version"/terraform_"$tf_version"_linux_amd64.zip
-        unzip terraform_"$tf_version"_linux_amd64.zip
-        sudo mv terraform /usr/local/bin/
+       tf_version=$TERRAFORM_VERSION
+       wget https://releases.hashicorp.com/terraform/"$tf_version"/terraform_"$tf_version"_linux_amd64.zip
+       unzip terraform_"$tf_version"_linux_amd64.zip
+       sudo mv terraform /usr/local/bin/
 
     - name: Verify Terraform version
-      run: terraform version
+      run: |
+       terraform version
 
     - name: Terraform init
       run: |
-        terraform init -input=false
+       terraform init -input=false
 
     - name: Terraform validation
       run: |
-        terraform validate
+       terraform validate
 
     - name: Terraform plan
       if: github.event_name == 'pull_request' || github.event_name == 'push'
@@ -75,18 +76,18 @@ jobs:
 
     - name: Install kubectl
       run: |
-        curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
-        sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+       curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+       sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
 
     - name: Install Helm
       run: |
-        curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+       curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
 
     - name: Install AWS CLI
       run: |
-        curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-        unzip awscliv2.zip
-        sudo ./aws/install --update
+       curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+       unzip awscliv2.zip
+       sudo ./aws/install --update
 
     - name: Verificando el cluster EKS
       run: |
