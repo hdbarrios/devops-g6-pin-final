@@ -10,7 +10,7 @@ Este proyecto demuestra cómo desplegar una infraestructura en AWS utilizando Te
 
 A continuación se muestra un diagrama de la infraestructura desplegada:
 
-![Diagrama de Infraestructura](infra-diagram.png)
+![Diagrama de Infraestructura](docs/imgs/infra-diagram.png)
 
 ### **Componentes Principales**
 1. **VPC y Subredes**:
